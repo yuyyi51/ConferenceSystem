@@ -9,5 +9,5 @@ router.get('/', function(req, res, next) {
   req.session.user = {username:"123123", password:"111111"};
   res.render('index', { title: title });
 });
-
+/*test*/
 module.exports = router;
