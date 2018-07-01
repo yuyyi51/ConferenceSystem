@@ -184,11 +184,13 @@ io.on('connection', (socket) => {
         socket.handshake.session.save();
       }
 
-      socket.emit('user:login', res);
+      socket.emit('user:login', res===true);
     });
   })
 
 
 });
 
-
+mongodb.searchConference(["tit"], new Date(), new Date(2018, 7, 20), 0, 10, (res)=>{
+  console.log(res);
+});
