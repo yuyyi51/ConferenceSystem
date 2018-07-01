@@ -4,7 +4,7 @@ var config = require("./lib/config");
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser')(config.session.secret);
 var logger = require('morgan');
 var session = require('express-session');
 var sharedsession = require('express-socket.io-session');
@@ -15,7 +15,7 @@ var usersRouter = require('./routes/users');
 var logoutRouter = require('./routes/logout');
 var loginRouter = require('./routes/login');
 
-
+var mongodb = require('./lib/mongo');
 
 var app = express();
 
@@ -26,19 +26,19 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-let sessionconfig = session({
+app.use(cookieParser);
+let sessionmiddleware = session({
   secret: config.session.secret,
   key: config.session.name,
   cookie: {maxAge: 1000 * 60 * 60 * 24 * 15},
-  resave: false,
-  saveUninitialized: false,
+  resave: true,
+  saveUninitialized: true,
   store: new mongostore({
     url: config.mongodb.getMongoUrl(),
     ttl: 14 * 24 * 60 * 60
   })
 });
-app.use(sessionconfig);
+app.use(sessionmiddleware);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
@@ -160,19 +160,35 @@ function onListening() {
 /**
  * WebSocket事件
  */
-io.use(sharedsession(sessionconfig));
+io.use(sharedsession(sessionmiddleware), cookieParser, {autoSave:true});
 
 io.on('connection', (socket) => {
   console.log('visitor connected.');
   socket.on('disconnect', (reason) => {
     console.log('visitor disconnected cause : ' + reason);
   });
-  console.log(socket.handshake.session.user);
   ///////////////////////////////////////////////////////////////////////
   //以下是socket响应
   ///////////////////////////////////////////////////////////////////////
 
+  socket.on('user:login', (data) => {
+    /*
+    data = {
+      username: str,
+      password: str
+    }
+    */
+    mongodb.login(data.username, data.password, (res) => {
+      if (res){
+        socket.handshake.session.user = {username: data.username};
+        socket.handshake.session.save();
+      }
+
+      socket.emit('user:login', res);
+    });
+  })
 
 
 });
+
 

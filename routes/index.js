@@ -4,9 +4,10 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   let title = 'hello';
-  if (!req.session.user)
-    title = 'not a user';
-  req.session.user = {username:"123123", password:"111111"};
+  //console.log("index");
+  //console.log(req.session);
+  if (req.session.user)
+    title = req.session.user.username;
   res.render('index', { title: title });
 });
 
