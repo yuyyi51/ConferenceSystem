@@ -10,5 +10,5 @@ router.get('/', function(req, res, next) {
     title = req.session.user.username;
   res.render('index', { title: title });
 });
-
+/*test1*/
 module.exports = router;
