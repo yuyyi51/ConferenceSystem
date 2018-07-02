@@ -11,12 +11,7 @@ var session = require('express-session');
 var sharedsession = require('express-socket.io-session');
 var mongostore = require('connect-mongo')(session);
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var logoutRouter = require('./routes/logout');
-var loginRouter = require('./routes/login');
-var meetinfoRouter = require('./routes/meetinfo');
-var postRouter = require('./routes/post');
+var router = require('./routes/router');
 
 var mongodb = require('./lib/mongo');
 
@@ -45,12 +40,7 @@ let sessionmiddleware = session({
 app.use(sessionmiddleware);
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/logout', logoutRouter);
-app.use('/login', loginRouter);
-app.use('/meetinfo', meetinfoRouter);
-app.use('/post', postRouter);
+app.use('/', router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
