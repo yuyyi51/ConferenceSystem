@@ -46,6 +46,14 @@ app.use('/users', usersRouter);
 app.use('/logout', logoutRouter);
 app.use('/login', loginRouter);
 
+app.get('/meetinfo', (req, res, next) => {
+  mongodb.lastestConference(0,5,(result) => {
+    console.log(result);
+    res.render('meetinfo',{confer: result});
+  });
+
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -186,11 +194,9 @@ io.on('connection', (socket) => {
       console.log(res !== null);
       socket.emit('user:login', res!==null);
     });
-  })
+  });
+
 
 
 });
 
-mongodb.searchConference(["tit"], new Date(), new Date(2018, 7, 20), 0, 10, (res)=>{
-  console.log(res);
-});
