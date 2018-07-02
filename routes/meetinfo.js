@@ -3,9 +3,14 @@ var router = express.Router();
 var mongodb = require('../lib/mongo');
 
 router.get('/', (req, res, next) => {
-  mongodb.lastestConference(0,5,(result) => {
+  let page = req.query.page;
+  let start = 0;
+  if (page !== undefined){
+    start = (page-1)*5;
+  }
+  mongodb.lastestConference(start,start+5,(result) => {
     console.log(result);
-    res.render('meetinfo',{confer: result});
+    res.render('meetinfo',{confer: result, page: (parseInt(page) || 1)});
   });
 
 });
