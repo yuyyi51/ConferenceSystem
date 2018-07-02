@@ -15,6 +15,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var logoutRouter = require('./routes/logout');
 var loginRouter = require('./routes/login');
+var meetinfoRouter = require('./routes/meetinfo');
+var postRouter = require('./routes/post');
 
 var mongodb = require('./lib/mongo');
 
@@ -47,14 +49,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/logout', logoutRouter);
 app.use('/login', loginRouter);
-
-app.get('/meetinfo', (req, res, next) => {
-  mongodb.lastestConference(0,5,(result) => {
-    console.log(result);
-    res.render('meetinfo',{confer: result});
-  });
-
-});
+app.use('/meetinfo', meetinfoRouter);
+app.use('/post', postRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
