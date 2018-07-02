@@ -79,7 +79,7 @@
                                 <div class="form-row">
 
                                     <div class="col-md-3">
-                                        <input class="form-control" id="meettitle" placeholder="请输入会议标题..">
+                                        <input class="form-control" id="meettitle" required="required" placeholder="请输入会议标题..">
                                     </div>
                                 </div>
 
@@ -87,20 +87,20 @@
                                 <div class="form-row">
 
                                     <div class="col-md-3">
-                                        <input class="form-control" id="org" placeholder="请输入主办机构..">
+                                        <input class="form-control" id="org" required placeholder="请输入主办机构..">
                                     </div>
                                 </div>
 
                                 <label for="Place" style="font-size: 1.2rem; margin-top: 1rem">主办地点</label>
                                 <div class="form-row">
                                     <div class="form-group col-md-2">
-                                        <input type="text" class="form-control" id="province" placeholder="省..">
+                                        <input type="text" class="form-control" id="province" required placeholder="省..">
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <input type="text" class="form-control" id="city" placeholder="市..">
+                                        <input type="text" class="form-control" id="city" required placeholder="市..">
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <input type="text" class="form-control" id="district" placeholder="区..">
+                                        <input type="text" class="form-control" id="district" required placeholder="区..">
                                     </div>
                                 </div>
 
@@ -108,23 +108,23 @@
                                 <div class="form-row">
 
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="年.." id="startyear">
+                                        <input type="text" class="form-control" required placeholder="年.." id="startyear">
                                     </div>
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="月.." id="startmonth">
+                                        <input type="text" class="form-control" required placeholder="月.." id="startmonth">
                                     </div>
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="日.." id="startday">
+                                        <input type="text" class="form-control" required placeholder="日.." id="startday">
                                     </div>
                                     <label style="font-size: 1rem; margin-left: 1rem; margin-right: 1rem;">至</label>
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="年.." id="endyear">
+                                        <input type="text" class="form-control" required placeholder="年.." id="endyear">
                                     </div>
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="月.." id="endmonth">
+                                        <input type="text" class="form-control" required placeholder="月.." id="endmonth">
                                     </div>
                                     <div class="col">
-                                        <input type="text" class="form-control" placeholder="日.." id="endday">
+                                        <input type="text" class="form-control" required placeholder="日.." id="endday">
                                     </div>
 
 
@@ -132,15 +132,15 @@
 
                                 <div class="form-group" style="margin-top: 1rem;">
                                     <label for="meetdes" style="font-size: 1.2rem;">会议简介</label>
-                                    <textarea class="form-control" id="meetdes" rows="7"></textarea>
+                                    <textarea class="form-control" id="meetdes" required rows="7"></textarea>
                                 </div>
 
                                 <div class="form-group" style="margin-top: 1rem;">
                                     <label for="paperdes" style="font-size: 1.2rem;">征文要求</label>
-                                    <textarea class="form-control" id="paperdes" rows="7"></textarea>
+                                    <textarea class="form-control" id="paperdes" required rows="7"></textarea>
                                 </div>
 
-                                <button type="button" class="btn btn-primary" id="button" style="margin-bottom: 1rem;">发布</button>
+                                <button type="submit" class="btn btn-primary" id="button" style="margin-bottom: 1rem;">发布</button>
 
 
                             </form>
@@ -172,7 +172,7 @@
 <script>
   const socket = io.connect();
   function $$(id) { return document.getElementById(id); }
-  $$('button').onclick = () => {
+  $$('form').onsubmit = () => {
     let data = {
       title: $$('meettitle').value,
       org: $$('org').value,
@@ -183,6 +183,7 @@
       paper_info: $$('paperdes').value
     };
     socket.emit('user:add_conference', data);
+    return false;
   }
   socket.on('user:add_conference', (res) => {
     if (res){
