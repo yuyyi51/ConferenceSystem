@@ -55,12 +55,12 @@
           <div class="container">
               <div class="row bg-white" style="margin-top: 2rem;margin-bottom: 1rem; border: 2px solid #e9eef2">
                 <div class="col">
-                  <form>
+                  <form id="form">
                     <label for="Meeting Title" style="font-size: 1.2rem;margin-top:0.5rem">会议标题</label>
                     <div class="form-row">
                       
                       <div class="col-md-3">
-                      <input type="email" class="form-control" id="meettitle" placeholder="请输入会议标题..">
+                      <input class="form-control" id="meettitle" placeholder="请输入会议标题..">
                       </div>
                     </div>
 
@@ -68,7 +68,7 @@
                     <div class="form-row">
                       
                       <div class="col-md-3">
-                      <input type="email" class="form-control" id="meettitle" placeholder="请输入主办机构..">
+                      <input class="form-control" id="org" placeholder="请输入主办机构..">
                       </div>
                     </div>
 
@@ -92,7 +92,7 @@
                         <input type="text" class="form-control" placeholder="年.." id="startyear">
                       </div>
                       <div class="col">
-                        <input type="text" class="form-control" placeholder="月.." id="starmonth">
+                        <input type="text" class="form-control" placeholder="月.." id="startmonth">
                       </div>
                       <div class="col">
                         <input type="text" class="form-control" placeholder="日.." id="startday">
@@ -121,7 +121,7 @@
                       <textarea class="form-control" id="paperdes" rows="7"></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="margin-bottom: 1rem;">发布</button>
+                    <button type="button" class="btn btn-primary" id="button" style="margin-bottom: 1rem;">发布</button>
 
                     
                   </form>
@@ -147,6 +147,32 @@
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
     <script src="../../assets/js/vendor/popper.min.js"></script>
     <script src="../js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
+    <script src="/socket.io/socket.io.js"></script> <!-- this script is provided by socket.io at runtime -->
+    <script>
+      const socket = io.connect();
+      function $$(id) { return document.getElementById(id); }
+      $$('button').onclick = () => {
+        let data = {
+          title: $$('meettitle').value,
+          org: $$('org').value,
+          location: $$('province').value + ' ' + $$('city').value + ' ' + $$('district').value,
+          start: $$('startyear').value + "年" + $$('startmonth').value + "月" + $$('startday').value + "日",
+          end: $$('endyear').value  + "年" +$$('endmonth').value + "月"+$$('endday').value+ "日",
+          description: $$('meetdes').value,
+          paper_info: $$('paperdes').value
+        };
+        socket.emit('user:add_conference', data);
+      }
+      socket.on('user:add_conference', (res) => {
+        if (res){
+          alert("发布成功");
+        }
+        else {
+          alert("发布失败");
+        }
+      });
+    </script>
 
   </body>
 </html>

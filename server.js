@@ -5,6 +5,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser')(config.session.secret);
+var bodyParser = require('body-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var sharedsession = require('express-socket.io-session');
@@ -26,6 +27,7 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser);
 let sessionmiddleware = session({
   secret: config.session.secret,
@@ -193,6 +195,13 @@ io.on('connection', (socket) => {
       }
       console.log(res !== null);
       socket.emit('user:login', res!==null);
+    });
+  });
+
+  socket.on('user:add_conference', (data) => {
+    data.update_time = new Date();
+    mongodb.addConference(data, (res) => {
+      socket.emit('user:add_conference', res);
     });
   });
 
