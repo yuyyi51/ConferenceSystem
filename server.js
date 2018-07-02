@@ -183,8 +183,8 @@ io.on('connection', (socket) => {
         socket.handshake.session.user = {username: data.username};
         socket.handshake.session.save();
       }
-
-      socket.emit('user:login', res===true);
+      console.log(res !== null);
+      socket.emit('user:login', res!==null);
     });
   })
 

@@ -3,11 +3,7 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  req.session.user = {
-    username: "1234",
-    password: "1111"
-  };
-  res.send('respond with a resource');
+  res.json({status:200, message:"hehe"});
 });
 
 module.exports = router;
