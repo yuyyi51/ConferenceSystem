@@ -1,6 +1,6 @@
-html
+html;
 body{
-	
+
 }
 .bd-links{
 	padding-top: 1rem;
@@ -35,7 +35,7 @@ body{
 	.sidenav-layout{
 		width: 260px;
 		height: calc(100vh);
-		
+
 	}
 	.sidenav-layout .navbar-toggler{
 	}
@@ -46,7 +46,7 @@ body{
 }
 
 .side-nav-link{
-	margin-left: 1.5rem;
+	margin-left: 3rem;
 	font-weight: normal;
 	font-size: 1.1rem;
 }
