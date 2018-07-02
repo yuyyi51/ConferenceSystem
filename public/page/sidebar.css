@@ -48,15 +48,22 @@ body{
 .side-nav-link{
 	margin-left: 1.5rem;
 	font-weight: normal;
+	font-size: 1.1rem;
 }
 
 .side-nav-header{
-	margin-left: 0.5rem;
-	margin-bottom: 2.5rem;
+	margin-left: 70px;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
 }
 
 .side-main-contain{
 	height: calc(100vh);
+}
+
+.main-navbar{
+	margin-left: -15px;
+	margin-right: -15px;
 }
 
 
