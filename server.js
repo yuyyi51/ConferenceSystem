@@ -190,7 +190,8 @@ io.on('connection', (socket) => {
       socket.emit('user:add_conference', res);
     });
   });
-  socket.on('user:Contribution_upload', (data) => {
+  socket.on('user:contribution_upload', (data) => {
+      socket.emit('user:contribution_upload', true);
       let base = data.base64 ;
       let uname = data.uploader ;
       data.base64 = null ;
@@ -202,7 +203,7 @@ io.on('connection', (socket) => {
                secondau: data.secondau,
                thirdau: data.thirdau,
           };
-          mongodb.addContribution(mongojson, (res) => {
+          mongodb.addContribution(data, (res) => {
               if (res === null){
                   console.log("向mongo添加文件失败");
               }
@@ -210,9 +211,10 @@ io.on('connection', (socket) => {
                   console.log("向mongo添加文件成功");
               }
           });
-      /*let filename = res ;
+
+      let filename = res ;
       let filebuffer = new Buffer(base, 'base64');
-      let wstream = fs.createWriteStream(config.file_path + filename, {
+      let wstream = fs.createWriteStream('D://test' + filename, {
           flags : 'w',
           encoding: 'binary'
       });
@@ -223,7 +225,7 @@ io.on('connection', (socket) => {
       wstream.on('close', () => {
           log(uname + " 上传了文件 " + data.filename + "，id为 " + res);
           socket.emit('user:contribution_upload', true);
-      });*/
+      });
       });
 
 

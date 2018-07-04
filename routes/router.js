@@ -41,7 +41,7 @@ router.get('/signin', function (req, res, next) {
   res.render('signin');
 });
 
-router.get('/uploadcontribution', function (req, res, next) {
+router.get('/uploadcontribution.ejs', function (req, res, next) {
     res.render('UploadContribution');
 });
 
