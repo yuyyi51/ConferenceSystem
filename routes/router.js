@@ -41,4 +41,8 @@ router.get('/signin', function (req, res, next) {
   res.render('signin');
 });
 
+router.get('/uploadcontribution', function (req, res, next) {
+    res.render('uploadcontribution');
+});
+
 module.exports = router;
