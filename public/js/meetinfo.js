@@ -20,12 +20,12 @@ $('#date_form').submit(() => {
 
 $('#desc').click(() => {
   let parmString = new URLSearchParams(window.location.href.split('?')[1]);
-  parmString.set('order', '1');
+  parmString.set('order', '-1');
   window.location.href = "/meetinfo?" + parmString.toString();
 });
 
 $('#asc').click(() => {
   let parmString = new URLSearchParams(window.location.href.split('?')[1]);
-  parmString.set('order', '-1');
+  parmString.set('order', '1');
   window.location.href = "/meetinfo?" + parmString.toString();
 });

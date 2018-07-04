@@ -22,9 +22,10 @@ router.get('/post', (req, res, next) => {
 router.get('/meetinfo', (req, res, next) => {
   let page = req.query.page || 1;
   let order = req.query.order || -1;
+  order = parseInt(order);
+  console.log(order);
   let keywords = req.query.keywords || '.';
   keywords = keywords.split('+');
-  console.log(keywords);
   let startdate = req.query.start || '1970-1-1';
   startdate = new Date(startdate);
   let enddate = req.query.end || '3000-1-1';
