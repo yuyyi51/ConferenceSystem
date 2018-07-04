@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongodb = require('../lib/mongo');
+var moment = require('moment');
 
 router.get('/', function(req, res, next) {
   res.redirect('/signin');
@@ -19,15 +20,33 @@ router.get('/post', (req, res, next) => {
 });
 
 router.get('/meetinfo', (req, res, next) => {
-  let page = req.query.page;
-  let start = 0;
+  let page = req.query.page || 1;
+  let order = req.query.order || -1;
+  let keywords = req.query.keywords || '.';
+  keywords = keywords.split('+');
+  console.log(keywords);
+  let startdate = req.query.start || '1970-1-1';
+  startdate = new Date(startdate);
+  let enddate = req.query.end || '3000-1-1';
+  enddate = new Date(enddate);
+
+  let skip = 0 ;
   if (page !== undefined){
-    start = (page-1)*5;
+    skip = (page-1)*5;
   }
-  mongodb.lastestConference(start,start+5,-1,(result) => {
+  mongodb.searchConference(keywords, startdate, enddate, skip, 5, order, (result) => {
+    console.log(result);
+    result.forEach((item, index)=>{
+      item.important_dates.conference_start = moment(item.important_dates.conference_start).format('YYYY年MM月DD日');
+      item.important_dates.conference_end = moment(item.important_dates.conference_end).format('YYYY年MM月DD日');
+    });
+    res.render('meetinfo', {confer: result, page: (parseInt(page) || 1)});
+  });
+  /*
+  mongodb.lastestConference(skip,skip+5,-1,(result) => {
     res.render('meetinfo',{confer: result, page: (parseInt(page) || 1)});
   });
-
+  */
 });
 
 router.get('/logout', function (req, res, next) {
