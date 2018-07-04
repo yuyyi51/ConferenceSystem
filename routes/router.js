@@ -42,7 +42,7 @@ router.get('/signin', function (req, res, next) {
 });
 
 router.get('/uploadcontribution', function (req, res, next) {
-    res.render('uploadcontribution');
+    res.render('UploadContribution');
 });
 
 module.exports = router;
