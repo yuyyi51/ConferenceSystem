@@ -24,7 +24,7 @@ router.get('/meetinfo', (req, res, next) => {
   if (page !== undefined){
     start = (page-1)*5;
   }
-  mongodb.lastestConference(start,start+5,(result) => {
+  mongodb.lastestConference(start,start+5,-1,(result) => {
     res.render('meetinfo',{confer: result, page: (parseInt(page) || 1)});
   });
 
