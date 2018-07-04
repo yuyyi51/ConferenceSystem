@@ -60,4 +60,8 @@ router.get('/signin', function (req, res, next) {
   res.render('signin');
 });
 
+router.get('/uploadcontribution.ejs', function (req, res, next) {
+    res.render('UploadContribution');
+});
+
 module.exports = router;
