@@ -11,10 +11,10 @@
     <title>上传投稿</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
 
     <!--Font Awesonme图标库-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -106,7 +106,7 @@
                                         <input type="text" class="form-control" id="SecondAu" placeholder="第二作者">
                                     </div>
                                     <div class="form-group col-md-3">
-                                        <input type="text" class="form-control" id="ThridAu" placeholder="第三作者">
+                                        <input type="text" class="form-control" id="ThirdAu" placeholder="第三作者">
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-top: 1rem;">
@@ -114,8 +114,9 @@
                                     <textarea class="form-control" id="Abstract" rows="7"></textarea>
                                 </div>
                                 <div>
-                                <input class="uploadfile form-control" type="file" name="uploadfile" id="uploadfile" value="上传文件" required>
-                                <input class="btn btn-primary btn-md upload-btn"class="submit"type="submit" id="upload_btn" value="上传">
+                                    <input type="file" name="uploadfile" id="uploadfile" value="上传文件" required>
+                                    <button type="button" class="btn btn-primary" id="button" style="margin-bottom: 1rem;">上传投稿</button>
+                                    <!--<input class="btn btn-primary btn-md upload-btn"class="submit"type="submit" id="upload_btn" value="上传">-->
                                 </div>
                             </form>
                         </div>
@@ -140,23 +141,27 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
 <script src="../../assets/js/vendor/popper.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
 <script src="/socket.io/socket.io.js"></script> <!-- this script is provided by socket.io at runtime -->
 <script>
+
     const socket = io.connect();
     function $$(id) { return document.getElementById(id); }
-    $$('button').onclick = () => {
+    $$('button').onclick = () =>   {
         let data = {
+
             title: $$('Contitle').value,
             org: $$('org').value,
-            firstau:$$('Firstau').value,
+            firstau:$$('FirstAu').value,
             secondau:$$('SecondAu').value,
             thirdau:$$('ThirdAu').value,
             abstract: $$('Abstract').value,
+
         };
         socket.emit('user:contribution_upload', data);
     }
+
     socket.on('user:contribution_upload', (res) => {
         if (res){
             alert("上传成功");
