@@ -65,4 +65,19 @@ router.get('/uploadcontribution', function (req, res, next) {
     res.render('UploadContribution');
 });
 
+router.get('/conference/:confer_id' , function(req, res, next){
+  //res.send(req.param('confer_id'));
+  res.send(req.params.confer_id);
+});
+
+router.get('/conference/:confer_id/review', function (req, res, next) {
+  
+});
+
+router.get('/conference/:confer_id/review/:paper_id', function (req, res, next) {
+  res.send(req.params.confer_id + ' ' + req.params.paper_id);
+});
+
+
+
 module.exports = router;
