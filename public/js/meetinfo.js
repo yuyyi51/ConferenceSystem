@@ -1,8 +1,3 @@
-function changePage(page) {
-  let parmString = new URLSearchParams(window.location.href.split('?')[1]);
-  parmString.set('page', page);
-  window.location.href = "/meetinfo?" + parmString.toString();
-}
 
 $('#date_form').click((e) => {
   e.stopPropagation();

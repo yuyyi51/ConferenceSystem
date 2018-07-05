@@ -36,7 +36,7 @@ router.get('/meetinfo', (req, res, next) => {
     skip = (page-1)*5;
   }
   mongodb.searchConference(keywords, startdate, enddate, skip, 5, order, (result) => {
-    console.log(result);
+    //console.log(result);
     result.forEach((item, index)=>{
       item.important_dates.conference_start = moment(item.important_dates.conference_start).format('YYYY年MM月DD日');
       item.important_dates.conference_end = moment(item.important_dates.conference_end).format('YYYY年MM月DD日');
@@ -71,7 +71,8 @@ router.get('/conference/:confer_id' , function(req, res, next){
 });
 
 router.get('/conference/:confer_id/review', function (req, res, next) {
-  res.render('review');
+  let page = req.query.page || 1;
+  res.render('review', {page: page});
 });
 
 router.get('/conference/:confer_id/review/:paper_id', function (req, res, next) {
