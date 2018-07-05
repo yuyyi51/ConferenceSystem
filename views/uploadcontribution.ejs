@@ -114,9 +114,8 @@
                                     <textarea class="form-control" id="Abstract" rows="7"></textarea>
                                 </div>
                                 <div>
-                                    <input type="file" name="uploadfile" id="uploadfile" value="上传文件" required>
-                                    <button type="button" class="btn btn-primary" id="button" style="margin-bottom: 1rem;">上传投稿</button>
-                                    <!--<input class="btn btn-primary btn-md upload-btn"class="submit"type="submit" id="upload_btn" value="上传">-->
+                                    <input class="uploadfile form-control" type="file" name="uploadfile" id="uploadfile" value="上传文件" required>
+                                    <button type="button" class="btn btn-primary" id="button" style="margin-bottom: 1rem;">上传</button>
                                 </div>
                             </form>
                         </div>
@@ -144,34 +143,7 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
 <script src="/socket.io/socket.io.js"></script> <!-- this script is provided by socket.io at runtime -->
-<script>
-
-    const socket = io.connect();
-    function $$(id) { return document.getElementById(id); }
-    $$('button').onclick = () =>   {
-        let data = {
-
-            title: $$('Contitle').value,
-            org: $$('org').value,
-            firstau:$$('FirstAu').value,
-            secondau:$$('SecondAu').value,
-            thirdau:$$('ThirdAu').value,
-            abstract: $$('Abstract').value,
-
-        };
-        socket.emit('user:contribution_upload', data);
-    }
-
-    socket.on('user:contribution_upload', (res) => {
-        if (res){
-            alert("上传成功");
-            window.location.href = '/meetinfo';
-        }
-        else {
-            alert("上传失败");
-        }
-    });
-</script>
+<script src="/js/uploadcontribution.js"></script>
 
 </body>
 </html>

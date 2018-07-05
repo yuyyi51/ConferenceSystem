@@ -36,7 +36,7 @@ router.get('/meetinfo', (req, res, next) => {
     skip = (page-1)*5;
   }
   mongodb.searchConference(keywords, startdate, enddate, skip, 5, order, (result) => {
-    console.log(result);
+    //console.log(result);
     result.forEach((item, index)=>{
       item.important_dates.conference_start = moment(item.important_dates.conference_start).format('YYYY年MM月DD日');
       item.important_dates.conference_end = moment(item.important_dates.conference_end).format('YYYY年MM月DD日');
@@ -60,10 +60,31 @@ router.get('/logout', function (req, res, next) {
 router.get('/signin', function (req, res, next) {
   res.render('signin');
 });
-
+router.get('/updateinfo',function (req, res, next) {
+    res.render('updateinfo');
+});
 router.get('/uploadcontribution', function (req, res, next) {
     res.render('UploadContribution');
 });
+router.get('mymeetings',function (req, res, next) {
+    res.render('mymeetings')
+});
+
+router.get('/conference/:confer_id' , function(req, res, next){
+  //res.send(req.param('confer_id'));
+  res.send(req.params.confer_id);
+});
+
+router.get('/conference/:confer_id/review', function (req, res, next) {
+  let page = req.query.page || 1;
+  res.render('review', {page: page});
+});
+
+router.get('/conference/:confer_id/review/:paper_id', function (req, res, next) {
+  res.send(req.params.confer_id + ' ' + req.params.paper_id);
+});
+
+
 
 router.get('/signup', function (req, res, next) {
     res.render('signup');
