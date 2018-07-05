@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./server.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -23,7 +23,8 @@
     "popper": "^1.0.1",
     "popper.js": "^1.14.3",
     "socket.io": "^2.1.1",
-    "spark-md5": "^3.0.0"
+    "spark-md5": "^3.0.0",
+    "moment": "^2.22.2"
   },
   "engines": {
     "node": ">= 6.0.0",
