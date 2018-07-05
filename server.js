@@ -191,7 +191,19 @@ io.on('connection', (socket) => {
     });
   });
 
-
+  socket.on('user:register',(data)=>{
+    /*
+    data={
+      username:str,
+      password:str,
+      institution:str
+    }
+     */
+    data.update_time=new Date();
+    mongodb.register(data.username,data.password,data.institution,(res)=>{
+      socket.emit('user:register',res);
+    })
+  });
 
 });
 
