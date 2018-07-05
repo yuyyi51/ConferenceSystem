@@ -60,9 +60,14 @@ router.get('/logout', function (req, res, next) {
 router.get('/signin', function (req, res, next) {
   res.render('signin');
 });
-
+router.get('/updateinfo',function (req, res, next) {
+    res.render('updateinfo');
+});
 router.get('/uploadcontribution', function (req, res, next) {
     res.render('UploadContribution');
+});
+router.get('mymeetings',function (req, res, next) {
+    res.render('mymeetings')
 });
 
 module.exports = router;
