@@ -71,7 +71,7 @@ router.get('/conference/:confer_id' , function(req, res, next){
 });
 
 router.get('/conference/:confer_id/review', function (req, res, next) {
-  
+  res.render('review');
 });
 
 router.get('/conference/:confer_id/review/:paper_id', function (req, res, next) {
