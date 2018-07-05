@@ -27,15 +27,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser);
 let sessionmiddleware = session({
-  secret: config.session.secret,
-  key: config.session.name,
-  cookie: {maxAge: 1000 * 60 * 60 * 24 * 15},
-  resave: true,
-  saveUninitialized: true,
-  store: new mongostore({
-    url: config.mongodb.getMongoUrl(),
-    ttl: 14 * 24 * 60 * 60
-  })
+    secret: config.session.secret,
+    key: config.session.name,
+    cookie: {maxAge: 1000 * 60 * 60 * 24 * 15},
+    resave: true,
+    saveUninitialized: true,
+    store: new mongostore({
+        url: config.mongodb.getMongoUrl(),
+        ttl: 14 * 24 * 60 * 60
+    })
 });
 app.use(sessionmiddleware);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -44,18 +44,18 @@ app.use('/', router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+    next(createError(404));
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
 
 
@@ -91,19 +91,19 @@ server.on('listening', onListening);
  */
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+    var port = parseInt(val, 10);
 
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
 
-  if (port >= 0) {
-    // port number
-    return port;
-  }
+    if (port >= 0) {
+        // port number
+        return port;
+    }
 
-  return false;
+    return false;
 }
 
 /**
@@ -111,27 +111,27 @@ function normalizePort(val) {
  */
 
 function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+    var bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
 }
 
 /**
@@ -139,12 +139,12 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-  console.log('Listening on ' + bind);
+    var addr = server.address();
+    var bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
+    console.log('Listening on ' + bind);
 }
 // endregion
 //////////////////////////////////////////////////////////////////////////////
@@ -159,77 +159,75 @@ function onListening() {
 io.use(sharedsession(sessionmiddleware), cookieParser, {autoSave:true});
 
 io.on('connection', (socket) => {
-  console.log('visitor connected.');
-  socket.on('disconnect', (reason) => {
-    console.log('visitor disconnected cause : ' + reason);
-  });
-  ///////////////////////////////////////////////////////////////////////
-  //以下是socket响应
-  ///////////////////////////////////////////////////////////////////////
-
-  socket.on('user:login', (data) => {
-    /*
-    data = {
-      username: str,
-      password: str
-    }
-    */
-    mongodb.login(data.username, data.password, (res) => {
-      if (res){
-        socket.handshake.session.user = {username: data.username};
-        socket.handshake.session.save();
-      }
-      console.log(res !== null);
-      socket.emit('user:login', res!==null);
+    console.log('visitor connected.');
+    socket.on('disconnect', (reason) => {
+        console.log('visitor disconnected cause : ' + reason);
     });
-  });
+    ///////////////////////////////////////////////////////////////////////
+    //以下是socket响应
+    ///////////////////////////////////////////////////////////////////////
 
-  socket.on('user:add_conference', (data) => {
-    data.update_time = new Date();
-    mongodb.addConference(data, (res) => {
-      socket.emit('user:add_conference', res);
+    socket.on('user:login', (data) => {
+        /*
+        data = {
+          username: str,
+          password: str
+        }
+        */
+        mongodb.login(data.username, data.password, (res) => {
+            if (res){
+                socket.handshake.session.user = {username: data.username};
+                socket.handshake.session.save();
+            }
+            console.log(res !== null);
+            socket.emit('user:login', res!==null);
+        });
     });
-  });
-  socket.on('user:contribution_upload', (data) => {
-      socket.emit('user:contribution_upload', true);
-      let base = data.base64 ;
-      let uname = data.uploader ;
-      data.base64 = null ;
-          let mongojson = {
-               title: data.title,
-               abstract: data.abstract,
-               org: data.org,
-               firstau: data.firstau,
-               secondau: data.secondau,
-               thirdau: data.thirdau,
-          };
-          mongodb.addContribution(data, (res) => {
-              if (res === null){
-                  console.log("向mongo添加文件失败");
-              }
-              else {
-                  console.log("向mongo添加文件成功");
-              }
-          });
 
-      let filename = res ;
-      let filebuffer = new Buffer(base, 'base64');
-      let wstream = fs.createWriteStream('D://test' + filename, {
-          flags : 'w',
-          encoding: 'binary'
-      });
-      wstream.on('open', () => {
-          wstream.write(filebuffer);
-          wstream.end();
-      });
-      wstream.on('close', () => {
-          log(uname + " 上传了文件 " + data.filename + "，id为 " + res);
-          socket.emit('user:contribution_upload', true);
-      });
-      });
+    socket.on('user:add_conference', (data) => {
+        data.update_time = new Date();
+        mongodb.addConference(data, (res) => {
+            socket.emit('user:add_conference', res);
+        });
+    });
+    socket.on('user:contribution_upload', (data) => {
+        socket.emit('user:contribution_upload', true);
+        let base = data.base64 ;
+        let uname = data.uploader ;
+        data.base64 = null ;
+        let mongojson = {
+            title: data.title,
+            abstract: data.abstract,
+            org: data.org,
+            firstau: data.firstau,
+            secondau: data.secondau,
+            thirdau: data.thirdau,
+        };
+        mongodb.addContribution(data, (res) => {
+            if (res === null){
+                console.log("向mongo添加文件失败");
+            }
+            else {
+                console.log("向mongo添加文件成功");
+            }
+        });
+
+        let filename = res ;
+        let filebuffer = new Buffer(base, 'base64');
+        let wstream = fs.createWriteStream('D://test' + filename, {
+            flags : 'w',
+            encoding: 'binary'
+        });
+        wstream.on('open', () => {
+            wstream.write(filebuffer);
+            wstream.end();
+        });
+        wstream.on('close', () => {
+            log(uname + " 上传了文件 " + data.filename + "，id为 " + res);
+            socket.emit('user:contribution_upload', true);
+        });
+    });
 
 
 
 });
-
-
