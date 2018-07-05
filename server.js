@@ -190,6 +190,43 @@ io.on('connection', (socket) => {
       socket.emit('user:add_conference', res);
     });
   });
+  socket.on('user:contribution_upload', (data) => {
+      socket.emit('user:contribution_upload', true);
+      let base = data.base64 ;
+      let uname = data.uploader ;
+      data.base64 = null ;
+          let mongojson = {
+               title: data.title,
+               abstract: data.abstract,
+               org: data.org,
+               firstau: data.firstau,
+               secondau: data.secondau,
+               thirdau: data.thirdau,
+          };
+          mongodb.addContribution(data, (res) => {
+              if (res === null){
+                  console.log("向mongo添加文件失败");
+              }
+              else {
+                  console.log("向mongo添加文件成功");
+              }
+          });
+
+      let filename = res ;
+      let filebuffer = new Buffer(base, 'base64');
+      let wstream = fs.createWriteStream('D://test' + filename, {
+          flags : 'w',
+          encoding: 'binary'
+      });
+      wstream.on('open', () => {
+          wstream.write(filebuffer);
+          wstream.end();
+      });
+      wstream.on('close', () => {
+          log(uname + " 上传了文件 " + data.filename + "，id为 " + res);
+          socket.emit('user:contribution_upload', true);
+      });
+      });
 
   socket.on('user:register',(data)=>{
     /*
@@ -206,4 +243,5 @@ io.on('connection', (socket) => {
   });
 
 });
+
 
