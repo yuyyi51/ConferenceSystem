@@ -5,14 +5,16 @@ $$('form').onsubmit = () => {
     title: $$('meettitle').value,
     org: $$('org').value,
     location: $$('province').value + ' ' + $$('city').value + ' ' + $$('district').value,
-    start: $$('startyear').value + "年" + $$('startmonth').value + "月" + $$('startday').value + "日",
-    end: $$('endyear').value  + "年" +$$('endmonth').value + "月"+$$('endday').value+ "日",
+    important_dates: {
+      conference_start: $$('startyear').value + '-' + $$('startmonth').value + '-' + $$('startday').value,
+      conference_end: $$('endyear').value  + '-' +$$('endmonth').value + '-'+$$('endday').value+ '-',
+    },
     description: $$('meetdes').value,
     paper_info: $$('paperdes').value
   };
   socket.emit('user:add_conference', data);
   return false;
-}
+};
 socket.on('user:add_conference', (res) => {
   if (res){
     alert("发布成功");

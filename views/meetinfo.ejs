@@ -33,8 +33,8 @@
             <!--头部导航栏-->
             <div class="navbar navbar-light main-navbar" style="background-color: #e3f2fd">
                 <a class="navbar-brand" href="#">会议概览</a>
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search">
+                <form class="form-inline" method="get" action="/meetinfo">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search" name="keywords">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>
@@ -45,13 +45,19 @@
                     <div class="col">
                         <div class="btn-group" role="group" style="padding: 0.5rem">
                             <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown">日期筛选</button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
-                                <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                            <button type="button" class="btn btn-outline-success">升序</button>
-                            <button type="button" class="btn btn-outline-success">降序</button>
+                                <form class="dropdown-menu px-4 py-3" id="date_form">
+                                    <div class="form-group">
+                                        <label for="start_date">会议开始时间</label>
+                                        <input type="date" class="form-control" id="start_date" name="start_date" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="end_date">会议结束时间</label>
+                                        <input type="date" class="form-control" id="end_date" name="end_date" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">检索</button>
+                                </form>
+                            <button type="button" class="btn btn-outline-success" id="asc">升序</button>
+                            <button type="button" class="btn btn-outline-success" id="desc">降序</button>
                         </div>
                     </div>
                 </div>
@@ -62,7 +68,7 @@
                             <% for(let i = 0; i < confer.length; ++i){ %>
                             <li class="list-group-item ">
                                 <h5><%= confer[i].title %></h5>
-                                <h6>日期: <%= confer[i].start %> 至 <%= confer[i].end %></h6>
+                                <h6>日期: <%= confer[i].important_dates.conference_start %> 至 <%= confer[i].important_dates.conference_end %></h6>
                                 <h6>地点: <%= confer[i].location %></h6>
                                 <h6>主办机构: <%= confer[i].org %></h6>
                             </li>
