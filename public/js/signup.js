@@ -26,7 +26,14 @@ $$('applyform').onsubmit=()=>{
     let data={
         username:$$('username').value,
         password:$$('password').value,
-        institution:$$('institution').value
+        institution:$$('institution').value,
+        type:"person",
+        status:"available",
+        location:"",
+        connectAdd:"",
+        manager:"",
+        telphone:"",
+        introduction:""
     };
     socket.emit('user:register',data);
     return false;

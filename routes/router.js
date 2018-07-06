@@ -81,13 +81,33 @@ router.get('/conference/:confer_id/review', function (req, res, next) {
 });
 
 router.get('/conference/:confer_id/review/:paper_id', function (req, res, next) {
-  res.send(req.params.confer_id + ' ' + req.params.paper_id);
+  if(req.params.paper_id.length !== 24){
+    res.send('参数错误');
+    return;
+  }
+  mongodb.selectPaper(req.params.paper_id, (result) => {
+    if (result === null){
+      res.send('论文不存在');
+      return;
+    }
+    /*
+    TODO: 检查论文是否在会议内
+     */
+    res.render('review_detail', {paper:result, cid:req.params.confer_id});
+  });
 });
 
-
+router.get('/conference/:confer_id/review/:paper_id/download', function (req, res, next){
+  res.send('download');
+});
 
 router.get('/signup', function (req, res, next) {
     res.render('signup');
 });
+
+router.get('/unituserRegister', function (req, res, next) {
+    res.render('unituserRegister');
+});
+
 
 module.exports = router;
