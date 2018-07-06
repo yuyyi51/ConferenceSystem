@@ -76,8 +76,16 @@ router.get('/conference/:confer_id' , function(req, res, next){
 });
 
 router.get('/conference/:confer_id/review', function (req, res, next) {
+  let cid = req.params.confer_id;
   let page = req.query.page || 1;
-  res.render('review', {page: page});
+  let skip = 0 ;
+  if (page !== undefined){
+    skip = (page-1)*5;
+  }
+  mongodb.selectPapers(cid, skip, 5, (result) => {
+    res.render('review', {page: parseInt(page), papers: result, cid: cid});
+  });
+
 });
 
 router.get('/conference/:confer_id/review/:paper_id', function (req, res, next) {
