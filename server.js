@@ -13,6 +13,7 @@ var mongostore = require('connect-mongo')(session);
 const fs = require('fs');
 var router = require('./routes/router');
 var mongodb = require('./lib/mongo');
+var mailer = require('nodemailer');
 
 var app = express();
 
@@ -150,6 +151,36 @@ function onListening() {
 //                          服务器监听结束
 //////////////////////////////////////////////////////////////////////////////
 
+var transporter = mailer.createTransport({
+  host: "smtp.163.com",
+  secureConnection: true,
+  port:465,
+  secure: true,
+  auth: {
+    user: 'yuyyi51@163.com',
+    pass: 'yyy163auth',
+  }
+});
+
+function sendmail(message){
+  transporter.sendMail(message, function(error, response){
+    if(error){
+      console.log("send email fail: " + error);
+    }else{
+      console.log("send email success: " + response.message);
+    }
+  });
+}
+/*
+let mailmessage = {
+  from: "yuyyi51@163.com",
+  to: "954822146@qq.com",
+  subject: "学术会议管理系统",
+  text: '用户yuyyi51，您向会议"人工智能的未来与发展"投稿的论文已被回忆负责人审阅，请查看审阅结果'
+};
+*/
+
+
 
 
 /**
@@ -244,5 +275,4 @@ io.on('connection', (socket) => {
   });
 
 });
-
 
