@@ -237,6 +237,12 @@ io.on('connection', (socket) => {
     })
   });
 
+    socket.on('update',(data)=>{
+        data.update_time=new Date();
+        mongodb.updateinfo(data.ddlyear,data.ddlmonth,data.ddlday,data.arrangement,(res)=>{
+            socket.emit('update',res);
+        })
+    });
 });
 
 

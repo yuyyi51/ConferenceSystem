@@ -77,16 +77,16 @@
             <div class="container">
                 <div class="row bg-white" style="margin-top: 2rem;margin-bottom: 1rem; border: 2px solid #e9eef2">
                     <div class="col">
-                        <form>
-                            <label for="meet title" style="font-size: 1.2rem;margin-top:0.5rem" >会议标题</label>
+                        <form id="updateform" role="form">
+                            <label for="meettitle" style="font-size: 1.2rem;margin-top:0.5rem" >会议标题</label>
                             <div class="form-row">
 
                                 <div class="col-md-3">
-                                    <input type="email" class="form-control" id="meet title" placeholder="XXXXXXX" readonly="readonly">
+                                    <input type="email" class="form-control" id="meettitle" placeholder="XXXXXXX" readonly="readonly">
                                 </div>
                             </div>
 
-                            <label for="Host" style="font-size: 1.2rem;margin-top:0.5rem">主办机构</label>
+                            <label for="host" style="font-size: 1.2rem;margin-top:0.5rem">主办机构</label>
                             <div class="form-row">
 
                                 <div class="col-md-3">
@@ -117,7 +117,7 @@
                                     <input type="text" class="form-control" placeholder="8月" id="starmonth" readonly="readonly">
                                 </div>
                                 <div class="col">
-                                    <input type="text" class="form-control" placeholder="12日" id="startday" readonly="readonly">
+                                    <input type="text"  class="form-control" placeholder="12日" id="startday" readonly="readonly">
                                 </div>
                                 <label style="font-size: 1rem; margin-left: 1rem; margin-right: 1rem;">至</label>
                                 <div class="col">
@@ -133,17 +133,17 @@
 
                             </div>
 
-                            <label for="endday" style="font-size: 1.2rem;">投稿截止日期</label>
+                            <label for="" style="font-size: 1.2rem;">投稿截止日期</label>
                             <div class="form-row">
 
                                 <div class="col">
-                                    <input type="text" class="form-control" placeholder="2018年" id="ddlyear">
+                                    <input type="text" class="form-control" required placeholder="2018年" id="ddlyear">
                                 </div>
                                 <div class="col">
-                                    <input type="text" class="form-control" placeholder="8月" id="ddlmonth">
+                                    <input type="text" class="form-control" required placeholder="8月" id="ddlmonth">
                                 </div>
                                 <div class="col">
-                                    <input type="text" class="form-control" placeholder="3日" id="ddlday">
+                                    <input type="text" class="form-control" required placeholder="3日" id="ddlday">
                                 </div>
                             </div>
 
@@ -157,11 +157,11 @@
                                 <textarea class="form-control" id="paperdes" rows="7" placeholder="这里是本次会议征文的要求" readonly="readonly"></textarea>
                             </div>
                             <div class="form-group" style="margin-top: 1rem;">
-                                <label for="paperdes" style="font-size: 1.2rem;">日程安排</label>
-                                <textarea class="form-control" id="arrangement" rows="7" placeholder="这里是本次会议日程安排"></textarea>
+                                <label for="arrangement" style="font-size: 1.2rem;">日程安排</label>
+                                <textarea class="form-control" id="arrangement" required rows="7" placeholder="这里是本次会议日程安排"></textarea>
                             </div>
 
-                            <button type="submit" class="btn btn-primary btn-dark" style="margin-bottom: 1rem;" id="update">更新</button>
+                            <button onclick="update()" type="submit" class="btn btn-primary btn-dark" style="margin-bottom: 1rem;" id="update">更新</button>
 
 
                         </form>
@@ -186,5 +186,6 @@
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
 <script src="../../assets/js/vendor/popper.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
+<script src="/public/js/updateinfo.js"></script>
 </body>
 </html>

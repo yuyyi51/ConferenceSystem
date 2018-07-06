@@ -66,8 +66,8 @@ router.get('/updateinfo',function (req, res, next) {
 router.get('/uploadcontribution', function (req, res, next) {
     res.render('UploadContribution');
 });
-router.get('mymeetings',function (req, res, next) {
-    res.render('mymeetings')
+router.get('/mymeetings',function (req, res, next) {
+   res.render('mymeetings');
 });
 
 router.get('/conference/:confer_id' , function(req, res, next){
