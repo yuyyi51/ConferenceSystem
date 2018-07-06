@@ -23,8 +23,8 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser);
 let sessionmiddleware = session({
   secret: config.session.secret,
@@ -43,12 +43,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', router);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -57,7 +57,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -146,6 +145,7 @@ function onListening() {
   debug('Listening on ' + bind);
   console.log('Listening on ' + bind);
 }
+
 // endregion
 //////////////////////////////////////////////////////////////////////////////
 //                          服务器监听结束
@@ -154,7 +154,7 @@ function onListening() {
 var transporter = mailer.createTransport({
   host: "smtp.163.com",
   secureConnection: true,
-  port:465,
+  port: 465,
   secure: true,
   auth: {
     user: 'yuyyi51@163.com',
@@ -162,15 +162,16 @@ var transporter = mailer.createTransport({
   }
 });
 
-function sendmail(message){
-  transporter.sendMail(message, function(error, response){
-    if(error){
+function sendmail(message) {
+  transporter.sendMail(message, function (error, response) {
+    if (error) {
       console.log("send email fail: " + error);
-    }else{
+    } else {
       console.log("send email success: " + response.message);
     }
   });
 }
+
 /*
 let mailmessage = {
   from: "yuyyi51@163.com",
@@ -181,12 +182,10 @@ let mailmessage = {
 */
 
 
-
-
 /**
  * WebSocket事件
  */
-io.use(sharedsession(sessionmiddleware), cookieParser, {autoSave:true});
+io.use(sharedsession(sessionmiddleware), cookieParser, {autoSave: true});
 
 io.on('connection', (socket) => {
   console.log('visitor connected.');
@@ -205,12 +204,12 @@ io.on('connection', (socket) => {
     }
     */
     mongodb.login(data.username, data.password, (res) => {
-      if (res){
-        socket.handshake.session.user = {username: data.username};
+      if (res) {
+        socket.handshake.session.user = {username: data.username, type: res.type};
         socket.handshake.session.save();
       }
       console.log(res !== null);
-      socket.emit('user:login', res!==null);
+      socket.emit('user:login', res !== null);
     });
   });
 
@@ -221,46 +220,47 @@ io.on('connection', (socket) => {
     });
   });
   socket.on('user:contribution_upload', (data) => {
-      let base = data.base64 ;
-      let uname = data.uploader ;
-      data.base64 = null ;
-      let datac = {
-               title: data.title,
-               abstract: data.abstract,
-               org: data.org,
-               firstau: data.firstau,
-               secondau: data.secondau,
-               thirdau: data.thirdau,
-               filename:data.filename
-                      };
-       mongodb.addContribution(datac);
+    let base = data.base64;
+    let uname = data.uploader;
+    data.base64 = null;
+    let datac = {
+      title: data.title,
+      abstract: data.abstract,
+      org: data.org,
+      firstau: data.firstau,
+      secondau: data.secondau,
+      thirdau: data.thirdau,
+      filename: data.filename
+    };
+    mongodb.addContribution(datac);
 
-      let filename =datac.filename;
-      let filebuffer = new Buffer(base, 'base64');
-      let wstream = fs.createWriteStream(config.file_path + filename, {
-          flags : 'w',
-          encoding: 'binary'
-      });
-      wstream.on('open', () => {
-          wstream.write(filebuffer);
-          wstream.end();
-      });
-      wstream.on('close', () => {
-          function log(str){
-              console.log(new Date().toLocaleString() + " : " + str);
-          }
-          /*log(uname + " 上传了文件 " + datac.filename + "，id为 " + res);*/
-          socket.emit('user:contribution_upload', true);
-      });
+    let filename = datac.filename;
+    let filebuffer = new Buffer(base, 'base64');
+    let wstream = fs.createWriteStream(config.file_path + filename, {
+      flags: 'w',
+      encoding: 'binary'
+    });
+    wstream.on('open', () => {
+      wstream.write(filebuffer);
+      wstream.end();
+    });
+    wstream.on('close', () => {
+      function log(str) {
+        console.log(new Date().toLocaleString() + " : " + str);
+      }
+
+      /*log(uname + " 上传了文件 " + datac.filename + "，id为 " + res);*/
+      socket.emit('user:contribution_upload', true);
+    });
   });
 
   socket.on('org:review', (data) => {
     mongodb.reviewPaper(data.pid, data.update, (res) => {
-        socket.emit('org:review', res !== null);
+      socket.emit('org:review', res !== null);
     });
   });
 
-  socket.on('user:register',(data)=>{
+  socket.on('user:register', (data) => {
     /*
     data={
       username:str,
@@ -268,36 +268,36 @@ io.on('connection', (socket) => {
       institution:str
     }
      */
-    data.update_time=new Date();
-    mongodb.register(data,(res)=>{
-      socket.emit('user:register',res);
+    data.update_time = new Date();
+    mongodb.register(data, (res) => {
+      socket.emit('user:register', res);
     })
   });
 
-    socket.on('user:unitRegister',(data)=>{
-        /*
-        data={
-          institution:str,
-          type:str,
-          location:str,
-          connectAdd:str,
-          manager:str,
-          telphone:str,
-          introduction:str
-        }
-         */
-        var username=socket.handshake.session.user.username;
-        data.update_time=new Date();
-        mongodb.unitRegister(username,data,(res)=>{
-            socket.emit('user:unitRegister',res);
-        })
-    });
-    socket.on('update',(data)=>{
-        data.update_time=new Date();
-        mongodb.updateinfo(data.ddlyear,data.ddlmonth,data.ddlday,data.arrangement,(res)=>{
-            socket.emit('update',res);
-        })
-    });
+  socket.on('user:unitRegister', (data) => {
+    /*
+    data={
+      institution:str,
+      type:str,
+      location:str,
+      connectAdd:str,
+      manager:str,
+      telphone:str,
+      introduction:str
+    }
+     */
+    var username = socket.handshake.session.user.username;
+    data.update_time = new Date();
+    mongodb.unitRegister(username, data, (res) => {
+      socket.emit('user:unitRegister', res);
+    })
+  });
+  socket.on('update', (data) => {
+    data.update_time = new Date();
+    mongodb.updateinfo(data.ddlyear, data.ddlmonth, data.ddlday, data.arrangement, (res) => {
+      socket.emit('update', res);
+    })
+  });
 });
 
 
