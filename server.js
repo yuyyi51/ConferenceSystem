@@ -220,39 +220,45 @@ io.on('connection', (socket) => {
     });
   });
   socket.on('user:contribution_upload', (data) => {
-    let base = data.base64;
-    let uname = data.uploader;
-    data.base64 = null;
-    let datac = {
-      title: data.title,
-      abstract: data.abstract,
-      org: data.org,
-      firstau: data.firstau,
-      secondau: data.secondau,
-      thirdau: data.thirdau,
-      filename: data.filename
-    };
-    mongodb.addContribution(datac);
 
-    let filename = datac.filename;
-    let filebuffer = new Buffer(base, 'base64');
-    let wstream = fs.createWriteStream(config.file_path + filename, {
-      flags: 'w',
-      encoding: 'binary'
-    });
-    wstream.on('open', () => {
-      wstream.write(filebuffer);
-      wstream.end();
-    });
-    wstream.on('close', () => {
-      function log(str) {
-        console.log(new Date().toLocaleString() + " : " + str);
-      }
+      let datac = {
+                _id:null,
+               title: data.title,
+               abstract: data.abstract,
+               org: data.org,
+               firstau: data.firstau,
+               secondau: data.secondau,
+               thirdau: data.thirdau,
+               filename:data.filename,
+               cid:"5b3f091cc735dc13bc61c484",
+               pid:null,
+               uploader:socket.handshake.session.user.username
+       };
+      mongodb.addContribution(datac,(res)=>
+      {
+          datac.pid=res;
+          mongodb.addConbyid(datac);
+          let base = data.base64 ;
+          data.base64 = null ;
+          let filename =datac._id;
+          let filebuffer = new Buffer(base, 'base64');
+          let wstream = fs.createWriteStream(config.file_path + filename, {
+              flags : 'w',
+              encoding: 'binary'
+          });
+          wstream.on('open', () => {
+              wstream.write(filebuffer);
+              wstream.end();
+          });
+          wstream.on('close', () => {
+              function log(str){
+                  console.log(new Date().toLocaleString() + " : " + str);
+              }
 
-      /*log(uname + " 上传了文件 " + datac.filename + "，id为 " + res);*/
+          });
+      });
       socket.emit('user:contribution_upload', true);
-    });
-  });
+      });
 
   socket.on('org:review', (data) => {
     mongodb.reviewPaper(data.pid, data.update, (res) => {
