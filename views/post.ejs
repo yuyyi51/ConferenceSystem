@@ -32,13 +32,7 @@
         <div class="bg-light col">  <!--网页主体-->
 
             <!--头部导航栏-->
-            <div class="navbar navbar-light main-navbar" style="background-color: #e3f2fd">
-                <a class="navbar-brand" href="#">会议发布</a>
-                <form class="form-inline" method="get" action="/meetinfo">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search" name="keywords">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-            </div>
+            <%- include("headnavbar.ejs", {page_title:"会议发布"})%>
             <!--头部导航栏-->
 
 
@@ -82,7 +76,6 @@
 
                                 <label for="Date Range" style="font-size: 1.2rem; ">起止日期</label><label style="color: #dc3545">*</label>
                                 <div class="form-row">
-
                                     <div class="col-auto">
                                         <input type="date" class="form-control" id="startDate" required>
                                         <div class="invalid-feedback">请选择会议开始日期</div>
@@ -93,8 +86,30 @@
                                         <input type="date" class="form-control" id="endDate" required>
                                         <div class="invalid-feedback">请选择会议结束日期</div>
                                     </div>
+                                </div>
 
+                                <label for="paperDate" style="font-size: 1.2rem; margin-top: 1rem">截稿时间</label><label style="color: #dc3545">*</label>
+                                <div class="form-row">
+                                    <div class="col-auto">
+                                        <input type="datetime-local" class="form-control" id="paperDate" required>
+                                        <div class="invalid-feedback">请选择截稿时间</div>
+                                    </div>
+                                </div>
 
+                                <label for="infoDate" style="font-size: 1.2rem; margin-top: 1rem">录用通知时间</label><label style="color: #dc3545">*</label>
+                                <div class="form-row">
+                                    <div class="col-auto">
+                                        <input type="datetime-local" class="form-control" id="infoDate" required>
+                                        <div class="invalid-feedback">请正确选择录用通知时间</div>
+                                    </div>
+                                </div>
+
+                                <label for="regDate" style="font-size: 1.2rem; margin-top: 1rem">注册截止时间</label><label style="color: #dc3545">*</label>
+                                <div class="form-row">
+                                    <div class="col-auto">
+                                        <input type="datetime-local" class="form-control" id="regDate" required>
+                                        <div class="invalid-feedback">请正确选择注册截止时间</div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group" style="margin-top: 1rem;">

@@ -12,6 +12,9 @@ $$('form').onsubmit = (event) => {
           important_dates: {
               conference_start: $$('startDate').value,
               conference_end: $$('endDate').value,
+              paper_end: $$('paperDate').value,
+              inform_end: $$('infoDate').value,
+              register_end: $$('regDate').value,
           },
           description: $$('meetdes').value,
           paper_info: $$('paperdes').value
@@ -35,6 +38,8 @@ function loadTime() {
     var year = time.getFullYear();
     var month = time.getMonth();
     var day = time.getDate();
+    var hour = time.getHours();
+    var minute = time.getMinutes();
     month = month+1;
     if (month < 10){
         month = '0'+month;
@@ -42,15 +47,46 @@ function loadTime() {
     if (day < 10){
         day = '0'+day;
     }
+    if (hour < 10){
+        hour = '0'+hour;
+    }
+    if (minute < 10){
+        minute = '0'+minute;
+    }
     var defaultdate = year+'-'+month+'-'+day;
+    var defaultdatetime = defaultdate+'T'+ hour+':'+minute;
     $$('startDate').min = defaultdate;
     $$('endDate').min = defaultdate;
+    $$('paperDate').min = defaultdatetime;
+    $$('infoDate').min = defaultdatetime;
+    $$('regDate').min = defaultdatetime;
 }
 
 
 $$('startDate').oninput= ()=>{
-    $$('endDate').value ='';
+    if ($$('startDate').value > $$('endDate').value){
+        $$('endDate').value ='';
+    }
     $$('endDate').min = $$('startDate').value;
+    var maxdatetime = $$('startDate').value + 'T00:00';
+    $$('paperDate').value = '';
+    $$('paperDate').max = maxdatetime;
+    $$('infoDate').value = '';
+    $$('infoDate').max = maxdatetime;
+    $$('regDate').value = '';
+    $$('regDate').max = maxdatetime;
+}
+
+$$('paperDate').oninput= ()=>{
+    $$('infoDate').value='';
+    $$('infoDate').min = $$('paperDate').value;
+    $$('regDate').value='';
+    $$('regDate').min = $$('paperDate').value;
+}
+
+$$('infoDate').oninput= ()=>{
+    $$('regDate').value='';
+    $$('regDate').min = $$('infoDate').value;
 }
 
 
