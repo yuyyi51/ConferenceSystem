@@ -25,7 +25,15 @@
 <div class="container-fluid" > <!--主体容器-->
     <div class="row flex-lg-nowrap"> <!--防溢出-->
         <div class="bg-primary sidebar-div sticky-top" style="width: 240px;" >  <!--侧边导航栏-->
-            <%- include("orgsidebar.ejs")%>
+            <% if (usertype === 'undefined'){ %>
+            <%- include("unlogsidebar.ejs")%>
+            <% }%>
+            <% if (usertype === 'unit'){ %>
+            <%- include("orgsidebar.ejs",{username: username, usertype:usertype})%>
+            <% }%>
+            <% if (usertype === 'person'){ %>
+            <%- include("personsidebar.ejs",{username: username, usertype:usertype})%>
+            <% }%>
         </div><!--侧边导航栏-->
 
 
@@ -91,7 +99,7 @@
                             <div class="form-row">
                                 <div class="col-auto">
                                     <input type="datetime-local" class="form-control" id="paperDate" required>
-                                    <div class="invalid-feedback">请选择截稿时间</div>
+                                    <div class="invalid-feedback">请于会议开始日期前选择截稿时间</div>
                                 </div>
                             </div>
 
@@ -99,7 +107,7 @@
                             <div class="form-row">
                                 <div class="col-auto">
                                     <input type="datetime-local" class="form-control" id="infoDate" required>
-                                    <div class="invalid-feedback">请正确选择录用通知时间</div>
+                                    <div class="invalid-feedback">请于截稿时间之后选择录取通知时间</div>
                                 </div>
                             </div>
 
@@ -107,7 +115,7 @@
                             <div class="form-row">
                                 <div class="col-auto">
                                     <input type="datetime-local" class="form-control" id="regDate" required>
-                                    <div class="invalid-feedback">请正确选择注册截止时间</div>
+                                    <div class="invalid-feedback">请于录取通知时间之后选择注册截止时间</div>
                                 </div>
                             </div>
 
@@ -145,7 +153,9 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
 <script src="/socket.io/socket.io.js"></script> <!-- this script is provided by socket.io at runtime -->
-
+<script>
+    var creator = '<%=username%>'
+</script>
 <script src="/js/post.js"></script>
 
 </body>

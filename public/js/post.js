@@ -17,7 +17,8 @@ $$('form').onsubmit = (event) => {
               register_end: $$('regDate').value,
           },
           description: $$('meetdes').value,
-          paper_info: $$('paperdes').value
+          paper_info: $$('paperdes').value,
+          creator: creator,
       };
       socket.emit('user:add_conference', data);
       return false;

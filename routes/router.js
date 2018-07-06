@@ -39,7 +39,12 @@ router.get('/', function (req, res, next) {
 
 router.get('/post', (req, res, next) => {
   if (auth_unit(req, res))
-    res.render('post');
+    var username;
+    var usertype;
+    var userid;
+    username = req.session.user.username;
+    usertype = req.session.user.type;
+    res.render('post',{username: username, usertype: usertype});
 });
 
 router.get('/meetinfo', (req, res, next) => {
@@ -64,7 +69,17 @@ router.get('/meetinfo', (req, res, next) => {
       item.important_dates.conference_start = moment(item.important_dates.conference_start).format('YYYY年MM月DD日');
       item.important_dates.conference_end = moment(item.important_dates.conference_end).format('YYYY年MM月DD日');
     });
-    res.render('meetinfo', {confer: result, page: (parseInt(page) || 1)});
+    var username;
+    var usertype;
+    if (req.session.user){
+      username = req.session.user.username;
+      usertype = req.session.user.type;
+    }
+    else{
+      username = 'defaultname';
+      usertype = 'undefined';
+    }
+      res.render('meetinfo', {confer: result, page: (parseInt(page) || 1),username: username, usertype: usertype});
   });
   /*
   mongodb.lastestConference(skip,skip+5,-1,(result) => {
@@ -105,7 +120,15 @@ router.get('/mymeetings', function (req, res, next) {
 router.get('/conference/:confer_id', function (req, res, next) {
   //res.send(req.param('confer_id'));
   if (auth_person(req, res))
-    res.send(req.params.confer_id);
+    var username;
+    var usertype;
+    username = req.session.user.username;
+    usertype = req.session.user.type;
+    mongodb.selectConference(req.params.confer_id,(result)=>{
+      result.important_dates.conference_start = moment(result.important_dates.conference_start).format('YYYY年MM月DD日');
+      result.important_dates.conference_end = moment(result.important_dates.conference_end).format('YYYY年MM月DD日');
+      res.render('conferencedetail',{username: username, usertype:usertype, confer: result});
+    })
 });
 
 router.get('/conference/:confer_id/review', function (req, res, next) {
