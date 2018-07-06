@@ -43,7 +43,7 @@
                         <ul class="list-group list-group-flush">
                             <%for(let i = 0; i < papers.length; ++i){%>
                                 <li class="list-group-item ">
-                                    <h5><a href="/conference/<%=cid%>/review/<%=papers[i]._id%>" style="text-decoration:none; color: black"><%=papers[i].title%></a></h5>
+                                    <h5>标题：<a href="/conference/<%=cid%>/review/<%=papers[i]._id%>" style="text-decoration:none; color: black"><%=papers[i].title%></a></h5>
                                     <h6>作者：<%=papers[i].firstau%>
                                         <%if (papers[i].secondau){%>-<%=papers[i].secondau%><%}%>
                                         <%if (papers[i].thirdau){%>-<%=papers[i].thirdau%><%}%></h6>
