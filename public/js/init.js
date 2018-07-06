@@ -1,6 +1,3 @@
-var socket = io.connect();
-function $$(id) { return document.getElementById(id); }
-
 var cookie_helper = {
 
   setCookie(name, value, days)//两个参数，一个是cookie的名子，一个是值
