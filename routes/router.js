@@ -101,4 +101,8 @@ router.get('/conference/:confer_id/review/:paper_id/download', function (req, re
   res.send('download');
 });
 
+router.get('/signup', function (req, res, next) {
+    res.render('signup');
+});
+
 module.exports = router;
