@@ -3,7 +3,29 @@ var router = express.Router();
 var mongodb = require('../lib/mongo');
 var moment = require('moment');
 
-router.get('/', function(req, res, next) {
+function auth_person(req, res) {
+  if (!req.session.user) {
+    res.setHeader('refresh', "1;/signin");
+    res.send('请先登录，将于1秒后跳转至登录页面');
+    res.end();
+    return false;
+  }
+  return true;
+}
+
+function auth_unit(req, res) {
+  if (!auth_person(req, res))
+    return false;
+  if (req.session.user.type !== 'unit') {
+    res.setHeader('refresh', "1;/meetinfo");
+    res.send('没有访问权限，将于1秒后跳转至主页');
+    res.end();
+    return false;
+  }
+  return true;
+}
+
+router.get('/', function (req, res, next) {
   res.redirect('/signin');
   /*
   let title = 'hello';
@@ -16,7 +38,8 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/post', (req, res, next) => {
-  res.render('post');
+  if (auth_unit(req, res))
+    res.render('post');
 });
 
 router.get('/meetinfo', (req, res, next) => {
@@ -31,13 +54,13 @@ router.get('/meetinfo', (req, res, next) => {
   let enddate = req.query.end || '3000-1-1';
   enddate = new Date(enddate);
 
-  let skip = 0 ;
-  if (page !== undefined){
-    skip = (page-1)*5;
+  let skip = 0;
+  if (page !== undefined) {
+    skip = (page - 1) * 5;
   }
   mongodb.searchConference(keywords, startdate, enddate, skip, 5, order, (result) => {
     //console.log(result);
-    result.forEach((item, index)=>{
+    result.forEach((item, index) => {
       item.important_dates.conference_start = moment(item.important_dates.conference_start).format('YYYY年MM月DD日');
       item.important_dates.conference_end = moment(item.important_dates.conference_end).format('YYYY年MM月DD日');
     });
@@ -60,42 +83,47 @@ router.get('/logout', function (req, res, next) {
 router.get('/signin', function (req, res, next) {
   res.render('signin');
 });
-router.get('/updateinfo',function (req, res, next) {
+router.get('/updateinfo', function (req, res, next) {
+  if (auth_unit(req, res))
     res.render('updateinfo');
 });
 router.get('/uploadcontribution', function (req, res, next) {
+  if (auth_person(req, res))
     res.render('UploadContribution');
 });
-router.get('/mymeetings',function (req, res, next) {
+router.get('/mymeetings', function (req, res, next) {
+  if (auth_person(req, res))
     res.render('mymeetings')
 });
 
-router.get('/conference/:confer_id' , function(req, res, next){
+router.get('/conference/:confer_id', function (req, res, next) {
   //res.send(req.param('confer_id'));
-  res.send(req.params.confer_id);
+  if (auth_person(req, res))
+    res.send(req.params.confer_id);
 });
 
 router.get('/conference/:confer_id/review', function (req, res, next) {
-  let cid = req.params.confer_id;
-  let page = req.query.page || 1;
-  let skip = 0 ;
-  if (page !== undefined){
-    skip = (page-1)*5;
+  if (auth_unit(req, res)){
+    let cid = req.params.confer_id;
+    let page = req.query.page || 1;
+    let skip = 0;
+    if (page !== undefined) {
+      skip = (page - 1) * 5;
+    }
+    mongodb.selectPapers(cid, skip, 5, (result) => {
+      res.render('review', {page: parseInt(page), papers: result, cid: cid});
+    });
   }
-  mongodb.selectPapers(cid, skip, 5, (result) => {
-    res.render('review', {page: parseInt(page), papers: result, cid: cid});
-  });
-
 });
 
 router.get('/conference/:confer_id/review/:paper_id', function (req, res, next) {
-  res.send(req.params.confer_id + ' ' + req.params.paper_id);
+  if (auth_unit(req, res))
+    res.send(req.params.confer_id + ' ' + req.params.paper_id);
 });
 
 
-
 router.get('/signup', function (req, res, next) {
-    res.render('signup');
+  res.render('signup');
 });
 
 module.exports = router;
