@@ -232,10 +232,29 @@ io.on('connection', (socket) => {
     }
      */
     data.update_time=new Date();
-    mongodb.register(data.username,data.password,data.institution,(res)=>{
+    mongodb.register(data,(res)=>{
       socket.emit('user:register',res);
     })
   });
+
+    socket.on('user:unitRegister',(data)=>{
+        /*
+        data={
+          institution:str,
+          type:str,
+          location:str,
+          connectAdd:str,
+          manager:str,
+          telphone:str,
+          introduction:str
+        }
+         */
+        var username=socket.handshake.session.user.username;
+        data.update_time=new Date();
+        mongodb.unitRegister(username,data,(res)=>{
+            socket.emit('user:unitRegister',res);
+        })
+    });
 
 });
 
