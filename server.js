@@ -221,7 +221,13 @@ io.on('connection', (socket) => {
           /*log(uname + " 上传了文件 " + datac.filename + "，id为 " + res);*/
           socket.emit('user:contribution_upload', true);
       });
-      });
+  });
+
+  socket.on('org:review', (data) => {
+    mongodb.reviewPaper(data.pid, data.update, (res) => {
+        socket.emit('org:review', res !== null);
+    });
+  });
 
 
 
