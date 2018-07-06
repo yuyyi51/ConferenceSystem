@@ -66,6 +66,15 @@ body{
 	margin-right: -15px;
 }
 
+.hbb{
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	border: 0;
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-top-color: #ffffff;
+}
+
 
 /*SCSS*/
 
