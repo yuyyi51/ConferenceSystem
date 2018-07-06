@@ -31,8 +31,9 @@
     <script>
       function changePage(page) {
         let parmString = new URLSearchParams(window.location.href.split('?')[1]);
+        let url = window.location.href.split('?')[0];
         parmString.set('page', page);
-        window.location.href = "/meetinfo?" + parmString.toString();
+        window.location.href = url + '?' + parmString.toString();
       }
     </script>
 </div>

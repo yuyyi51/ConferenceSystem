@@ -8,7 +8,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
 
-    <title>上传投稿</title>
+    <title>申请成为单位用户</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -46,7 +46,7 @@
                             <a class="nav-link side-nav-link active" href="#"><i class="fas fa-address-card"></i> 法人信息</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link side-nav-link active" href="mymeetings.html"><i class="far fa-edit"></i> 会议管理</a>
+                            <a class="nav-link side-nav-link active" href="#"><i class="far fa-edit"></i> 会议管理</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link side-nav-link active" href="post.html"><i class="fas fa-external-link-alt"></i> 发布会议</a>
@@ -67,9 +67,9 @@
 
             <!--头部导航栏-->
             <div class="navbar navbar-light main-navbar" style="background-color: #e3f2fd">
-                <a class="navbar-brand" href="#">请填写您的投稿信息</a>
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search">
+                <a class="navbar-brand" href="#">请填写单位信息</a>
+                <form class="form-inline" method="get" action="/meetinfo">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search" name="keywords">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>
@@ -80,43 +80,50 @@
                 <div class="container">
                     <div class="row bg-white" style="margin-top: 2rem;margin-bottom: 1rem; border: 2px solid #e9eef2">
                         <div class="col">
-                            <form id="form">
-                                <label for="Contribution Title" style="font-size: 1.2rem;margin-top:0.5rem">论文标题</label>
+                            <form id="applyform">
+                                <label style="font-size: 1.2rem;margin-top:0.5rem">机构名称</label>
                                 <div class="form-row">
-
                                     <div class="col-md-3">
-                                        <input class="form-control" id="Contitle" placeholder="请输入会议标题..">
+                                        <input class="form-control" id="institution" placeholder="请输入机构名称..">
                                     </div>
                                 </div>
 
-                                <label for="Organization" style="font-size: 1.2rem;margin-top:0.5rem">单位</label>
+                                <label style="font-size: 1.2rem; margin-top: 1rem">所在区域</label>
                                 <div class="form-row">
-
-                                    <div class="col-md-3">
-                                        <input class="form-control" id="org" placeholder="请输入您所在的单位..">
+                                    <div class="form-group col-md-2">
+                                        <input type="text" class="form-control" id="province" required placeholder="省..">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <input type="text" class="form-control" id="city" required placeholder="市..">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <input type="text" class="form-control" id="district" required placeholder="区..">
                                     </div>
                                 </div>
 
-                                <label for="Authors" style="font-size: 1.2rem; margin-top: 1rem">论文作者</label>
+                                <label style="font-size: 1.2rem; margin-top: 1rem">通讯地址</label>
                                 <div class="form-row">
                                     <div class="form-group col-md-3">
-                                        <input type="text" class="form-control" id="FirstAu" placeholder="第一作者">
+                                        <input type="text" class="form-control" id="connectAdd" required placeholder="请输入通讯地址..">
                                     </div>
+                                </div>
+                                <label style="font-size: 1.2rem; margin-top: 1rem">机构负责人</label>
+                                <div class="form-row">
                                     <div class="form-group col-md-3">
-                                        <input type="text" class="form-control" id="SecondAu" placeholder="第二作者">
+                                        <input type="text" class="form-control" id="manager" required placeholder="请输入负责人姓名..">
                                     </div>
+                                </div>
+                                <label style="font-size: 1.2rem; margin-top: 1rem">负责人电话</label>
+                                <div class="form-row">
                                     <div class="form-group col-md-3">
-                                        <input type="text" class="form-control" id="ThirdAu" placeholder="第三作者">
+                                        <input type="text" class="form-control" id="telphone" required placeholder="请输入负责人电话..">
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-top: 1rem;">
-                                    <label for="Abstract" style="font-size: 1.2rem;">论文摘要(中文摘要即可)</label>
-                                    <textarea class="form-control" id="Abstract" rows="7"></textarea>
+                                    <label style="font-size: 1.2rem;">机构简介</label>
+                                    <textarea class="form-control" id="introduction" rows="7"></textarea>
                                 </div>
-                                <div>
-                                    <input class="uploadfile form-control" type="file" name="uploadfile" id="uploadfile" value="上传文件" required>
-                                    <button type="button" class="btn btn-primary" id="button" style="margin-bottom: 1rem;">上传</button>
-                                </div>
+                                <button type="submit" class="btn btn-primary" style="margin-bottom: 1rem;">确认提交</button>
                             </form>
                         </div>
                     </div>
@@ -143,7 +150,7 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
 <script src="/socket.io/socket.io.js"></script> <!-- this script is provided by socket.io at runtime -->
-<script src="/js/uploadcontribution.js"></script>
+<script src="/js/unituserRegister.js"></script>
 
 </body>
 </html>

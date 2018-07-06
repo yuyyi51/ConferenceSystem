@@ -13,6 +13,8 @@ var mongostore = require('connect-mongo')(session);
 const fs = require('fs');
 var router = require('./routes/router');
 var mongodb = require('./lib/mongo');
+var mailer = require('nodemailer');
+
 var app = express();
 
 // view engine setup
@@ -21,8 +23,8 @@ app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser);
 let sessionmiddleware = session({
   secret: config.session.secret,
@@ -41,12 +43,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', router);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -55,7 +57,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -144,17 +145,47 @@ function onListening() {
   debug('Listening on ' + bind);
   console.log('Listening on ' + bind);
 }
+
 // endregion
 //////////////////////////////////////////////////////////////////////////////
 //                          服务器监听结束
 //////////////////////////////////////////////////////////////////////////////
 
+var transporter = mailer.createTransport({
+  host: "smtp.163.com",
+  secureConnection: true,
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'yuyyi51@163.com',
+    pass: 'yyy163auth',
+  }
+});
+
+function sendmail(message) {
+  transporter.sendMail(message, function (error, response) {
+    if (error) {
+      console.log("send email fail: " + error);
+    } else {
+      console.log("send email success: " + response.message);
+    }
+  });
+}
+
+/*
+let mailmessage = {
+  from: "yuyyi51@163.com",
+  to: "954822146@qq.com",
+  subject: "学术会议管理系统",
+  text: '用户yuyyi51，您向会议"人工智能的未来与发展"投稿的论文已被回忆负责人审阅，请查看审阅结果'
+};
+*/
 
 
 /**
  * WebSocket事件
  */
-io.use(sharedsession(sessionmiddleware), cookieParser, {autoSave:true});
+io.use(sharedsession(sessionmiddleware), cookieParser, {autoSave: true});
 
 io.on('connection', (socket) => {
   console.log('visitor connected.');
@@ -173,12 +204,12 @@ io.on('connection', (socket) => {
     }
     */
     mongodb.login(data.username, data.password, (res) => {
-      if (res){
-        socket.handshake.session.user = {username: data.username};
+      if (res) {
+        socket.handshake.session.user = {username: data.username, type: res.type};
         socket.handshake.session.save();
       }
       console.log(res !== null);
-      socket.emit('user:login', res!==null);
+      socket.emit('user:login', res !== null);
     });
   });
 
@@ -229,7 +260,13 @@ io.on('connection', (socket) => {
       socket.emit('user:contribution_upload', true);
       });
 
-  socket.on('user:register',(data)=>{
+  socket.on('org:review', (data) => {
+    mongodb.reviewPaper(data.pid, data.update, (res) => {
+      socket.emit('org:review', res !== null);
+    });
+  });
+
+  socket.on('user:register', (data) => {
     /*
     data={
       username:str,
@@ -237,12 +274,36 @@ io.on('connection', (socket) => {
       institution:str
     }
      */
-    data.update_time=new Date();
-    mongodb.register(data.username,data.password,data.institution,(res)=>{
-      socket.emit('user:register',res);
+    data.update_time = new Date();
+    mongodb.register(data, (res) => {
+      socket.emit('user:register', res);
     })
   });
 
+  socket.on('user:unitRegister', (data) => {
+    /*
+    data={
+      institution:str,
+      type:str,
+      location:str,
+      connectAdd:str,
+      manager:str,
+      telphone:str,
+      introduction:str
+    }
+     */
+    var username = socket.handshake.session.user.username;
+    data.update_time = new Date();
+    mongodb.unitRegister(username, data, (res) => {
+      socket.emit('user:unitRegister', res);
+    })
+  });
+  socket.on('update', (data) => {
+    data.update_time = new Date();
+    mongodb.updateinfo(data.ddlyear, data.ddlmonth, data.ddlday, data.arrangement, (res) => {
+      socket.emit('update', res);
+    })
+  });
 });
 
 
