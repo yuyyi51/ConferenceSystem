@@ -240,7 +240,7 @@ io.on('connection', (socket) => {
           mongodb.addConbyid(datac);
           let base = data.base64 ;
           data.base64 = null ;
-          let filename =data._id;
+          let filename =datac._id;
           let filebuffer = new Buffer(base, 'base64');
           let wstream = fs.createWriteStream(config.file_path + filename, {
               flags : 'w',
