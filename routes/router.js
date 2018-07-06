@@ -76,7 +76,9 @@ router.get('/meetinfo', (req, res, next) => {
 router.get('/logout', function (req, res, next) {
   //req.session.user = null;
   req.session.destroy((err) => {
-    res.redirect('/');
+    res.setHeader('refresh', "1;/meetinfo");
+    res.send('登出成功，将于1秒后跳转至主页');
+    res.end();
   });
 });
 
