@@ -11,10 +11,10 @@
     <title>会议概览</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
 
     <!--Font Awesonme图标库-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -67,8 +67,8 @@
             <!--头部导航栏-->
             <div class="navbar navbar-light main-navbar" style="background-color: #e3f2fd">
                 <a class="navbar-brand" href="#">这里是网页标题</a>
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search">
+                <form class="form-inline" method="get" action="/meetinfo">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search" name="keywords">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>
@@ -93,7 +93,7 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-<script src="../../assets/js/vendor/popper.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="https://cdn.staticfile.org/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

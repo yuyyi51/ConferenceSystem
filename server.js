@@ -10,9 +10,8 @@ var logger = require('morgan');
 var session = require('express-session');
 var sharedsession = require('express-socket.io-session');
 var mongostore = require('connect-mongo')(session);
-
+const fs = require('fs');
 var router = require('./routes/router');
-
 var mongodb = require('./lib/mongo');
 
 var app = express();
@@ -191,30 +190,23 @@ io.on('connection', (socket) => {
     });
   });
   socket.on('user:contribution_upload', (data) => {
-      socket.emit('user:contribution_upload', true);
       let base = data.base64 ;
       let uname = data.uploader ;
       data.base64 = null ;
-          let mongojson = {
+      let datac = {
                title: data.title,
                abstract: data.abstract,
                org: data.org,
                firstau: data.firstau,
                secondau: data.secondau,
                thirdau: data.thirdau,
-          };
-          mongodb.addContribution(data, (res) => {
-              if (res === null){
-                  console.log("向mongo添加文件失败");
-              }
-              else {
-                  console.log("向mongo添加文件成功");
-              }
-          });
+               filename:data.filename
+                      };
+       mongodb.addContribution(datac);
 
-      let filename = res ;
+      let filename =datac.filename;
       let filebuffer = new Buffer(base, 'base64');
-      let wstream = fs.createWriteStream('D://test' + filename, {
+      let wstream = fs.createWriteStream(config.file_path + filename, {
           flags : 'w',
           encoding: 'binary'
       });
@@ -223,12 +215,27 @@ io.on('connection', (socket) => {
           wstream.end();
       });
       wstream.on('close', () => {
-          log(uname + " 上传了文件 " + data.filename + "，id为 " + res);
+          function log(str){
+              console.log(new Date().toLocaleString() + " : " + str);
+          }
+          /*log(uname + " 上传了文件 " + datac.filename + "，id为 " + res);*/
           socket.emit('user:contribution_upload', true);
       });
       });
 
-
+  socket.on('user:register',(data)=>{
+    /*
+    data={
+      username:str,
+      password:str,
+      institution:str
+    }
+     */
+    data.update_time=new Date();
+    mongodb.register(data.username,data.password,data.institution,(res)=>{
+      socket.emit('user:register',res);
+    })
+  });
 
 });
 

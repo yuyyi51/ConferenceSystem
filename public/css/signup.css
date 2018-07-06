@@ -1,0 +1,14 @@
+body{
+    padding-top: 7%;
+}
+
+
+.form{
+    width: 100%;
+    max-width: 70%;
+    margin: 0 auto;
+
+}
+.form-row{
+    margin-top: 1rem;
+}
