@@ -50,6 +50,10 @@ router.get('/meetinfo', (req, res, next) => {
   */
 });
 
+router.get('/meetdetail', (req, res, next) => {
+    res.render('meetdetail');
+});
+
 router.get('/logout', function (req, res, next) {
   //req.session.user = null;
   req.session.destroy((err) => {
