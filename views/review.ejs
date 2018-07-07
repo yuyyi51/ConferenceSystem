@@ -25,7 +25,15 @@
 <div class="container-fluid" > <!--主体容器-->
     <div class="row flex-lg-nowrap"> <!--防溢出-->
         <div class="bg-primary sidebar-div sticky-top" style="width: 240px;" >  <!--侧边导航栏-->
-            <%- include("orgsidebar.ejs")%>
+            <% if (usertype === 'undefined'){ %>
+            <%- include("unlogsidebar.ejs")%>
+            <% }%>
+            <% if (usertype === 'unit'){ %>
+            <%- include("orgsidebar.ejs",{username: username, usertype:usertype})%>
+            <% }%>
+            <% if (usertype === 'person'){ %>
+            <%- include("personsidebar.ejs",{username: username, usertype:usertype})%>
+            <% }%>
         </div><!--侧边导航栏-->
 
         <div class="bg-light col">  <!--网页主体-->
