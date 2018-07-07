@@ -108,18 +108,20 @@ router.get('/updateinfo', function (req, res, next) {
     res.render('updateinfo');
 });
 router.get('/uploadcontribution/:confer_id', function (req, res, next) {
-  if (auth_person(req, res))
-      var username;
-      var usertype;
-      if (req.session.user){
-          username = req.session.user.username;
-          usertype = req.session.user.type;
-      }
-      else{
-          username = 'defaultname';
-          usertype = 'undefined';
-      }
-      res.render('uploadcontribution',{username: username, usertype: usertype,confer_id:req.params.confer_id});
+  if (auth_person(req, res)){
+    var username;
+    var usertype;
+    if (req.session.user){
+      username = req.session.user.username;
+      usertype = req.session.user.type;
+    }
+    else{
+      username = 'defaultname';
+      usertype = 'undefined';
+    }
+    res.render('uploadcontribution',{username: username, usertype: usertype,confer_id:req.params.confer_id});
+  }
+
 });
 router.get('/mymeetings', function (req, res, next) {
   if (auth_person(req, res))
@@ -128,7 +130,7 @@ router.get('/mymeetings', function (req, res, next) {
 
 router.get('/conference/:confer_id', function (req, res, next) {
   //res.send(req.param('confer_id'));
-  if (auth_person(req, res))
+  if (auth_person(req, res)){
     var username;
     var usertype;
     username = req.session.user.username;
@@ -138,6 +140,8 @@ router.get('/conference/:confer_id', function (req, res, next) {
       result.important_dates.conference_end = moment(result.important_dates.conference_end).format('YYYY年MM月DD日');
       res.render('conferencedetail',{username: username, usertype:usertype, confer: result, cid: req.params.confer_id});
     })
+  }
+
 });
 
 router.get('/conference/:confer_id/review', function (req, res, next) {
@@ -176,6 +180,6 @@ router.get('/unituserRegister',function (req, res, next){
         usertype = 'undefined';
     }
     res.render('unituserRegister',{username:username,usertype:usertype});
-})
+});
 
 module.exports = router;
