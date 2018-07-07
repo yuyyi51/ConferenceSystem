@@ -108,9 +108,19 @@ router.get('/updateinfo', function (req, res, next) {
   if (auth_unit(req, res))
     res.render('updateinfo');
 });
-router.get('/uploadcontribution', function (req, res, next) {
+router.get('/uploadcontribution/:confer_id', function (req, res, next) {
   if (auth_person(req, res))
-    res.render('UploadContribution');
+      var username;
+      var usertype;
+      if (req.session.user){
+          username = req.session.user.username;
+          usertype = req.session.user.type;
+      }
+      else{
+          username = 'defaultname';
+          usertype = 'undefined';
+      }
+      res.render('uploadcontribution',{username: username, usertype: usertype,confer_id:req.params.confer_id});
 });
 router.get('/mymeetings', function (req, res, next) {
   if (auth_person(req, res))
@@ -120,15 +130,21 @@ router.get('/mymeetings', function (req, res, next) {
 router.get('/conference/:confer_id', function (req, res, next) {
   //res.send(req.param('confer_id'));
   if (auth_person(req, res))
-    var username;
-    var usertype;
-    username = req.session.user.username;
-    usertype = req.session.user.type;
-    mongodb.selectConference(req.params.confer_id,(result)=>{
-      result.important_dates.conference_start = moment(result.important_dates.conference_start).format('YYYY年MM月DD日');
-      result.important_dates.conference_end = moment(result.important_dates.conference_end).format('YYYY年MM月DD日');
-      res.render('conferencedetail',{username: username, usertype:usertype, confer: result});
-    })
+      var username;
+      var usertype;
+      if (req.session.user){
+          username = req.session.user.username;
+          usertype = req.session.user.type;
+      }
+      else{
+          username = 'defaultname';
+          usertype = 'undefined';
+      }
+      mongodb.selectConference(req.params.confer_id,(result)=>{
+        result.important_dates.conference_start = moment(result.important_dates.conference_start).format('YYYY年MM月DD日');
+        result.important_dates.conference_end = moment(result.important_dates.conference_end).format('YYYY年MM月DD日');
+        res.render('conferencedetail',{username: username, usertype:usertype, confer: result});
+      })
 });
 
 router.get('/conference/:confer_id/review', function (req, res, next) {
@@ -154,5 +170,19 @@ router.get('/conference/:confer_id/review/:paper_id', function (req, res, next) 
 router.get('/signup', function (req, res, next) {
   res.render('signup');
 });
+
+router.get('/unituserRegister',function (req, res, next){
+    var username;
+    var usertype;
+    if (req.session.user){
+        username = req.session.user.username;
+        usertype = req.session.user.type;
+    }
+    else{
+        username = 'defaultname';
+        usertype = 'undefined';
+    }
+    res.render('unituserRegister',{username:username,usertype:usertype});
+})
 
 module.exports = router;
