@@ -7,7 +7,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
-
     <title>会议管理</title>
 
     <!-- Bootstrap core CSS -->
@@ -21,7 +20,6 @@
 </head>
 <!--mr margin-right -->
 <body>
-
 <div class="container-fluid" > <!--主体容器-->
     <div class="row flex-lg-nowrap"> <!--防溢出-->
         <div class="bg-primary sidebar-div sticky-top" style="width: 240px;" >  <!--侧边导航栏-->
@@ -29,59 +27,51 @@
         </div><!--侧边导航栏-->
 
         <div class="bg-light col">  <!--网页主体-->
-
             <!--头部导航栏-->
-            <div class="navbar navbar-light main-navbar" style="background-color: #e3f2fd">
-                <a class="navbar-brand" href="#">会议管理</a>
-                <form class="form-inline" method="get" action="/mymeetings">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search" name="keywords">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-            </div>
+            <%- include("headnavbar.ejs", {page_title:"我的会议"})%>
             <!--头部导航栏-->
-
             <div class="container">
-                <div class="row">
+                <div class="form-row bg-white" style="margin-top:3rem;border: 2px solid #e9eef2">
                     <div class="col">
-                        <div class="btn-group" role="group" style="padding: 0.5rem">
-                            <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown">日期筛选</button>
-                            <form class="dropdown-menu px-4 py-3" id="date_form">
-                                <div class="form-group">
-                                    <label for="start_date">会议开始时间</label>
-                                    <input type="date" class="form-control" id="start_date" name="start_date" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="end_date">会议结束时间</label>
-                                    <input type="date" class="form-control" id="end_date" name="end_date" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary">检索</button>
-                            </form>
-                            <button type="button" class="btn btn-outline-success" id="asc">升序</button>
-                            <button type="button" class="btn btn-outline-success" id="desc">降序</button>
-                        </div>
-                    </div>
-                </div>
+                        <table class="table table-borderless" style="margin-bottom: -0.1rem;">
+                            <thead>
+                            <tr class="">
+                                <th scope="col">#</th>
+                                <th scope="col">会议标题</th>
+                                <th scope="col">会议日期</th>
+                                <th scope="col">投稿截止时间</th>
+                                <th scope="col">录用通知时间</th>
+                                <th scope="col">管理</th>
+                            </tr>
+                            </thead>
+                            <tbody class="">
+                            <% for (let i=0; i<confer.length;++i) { %>
+                                <tr class="align-items-center" style="border-top: 1px solid #e9eef2;">
+                                    <th scope="row" style="vertical-align: middle"><%=i+1%></th>
+                                    <td style="vertical-align: middle"><%=confer[i].title%></td>
+                                    <td style="vertical-align: middle"><%=confer[i].important_dates.conference_start%> 至 <%=confer[i].important_dates.conference_end%></td>
+                                    <td style="vertical-align: middle"><%=confer[i].important_dates.paper_end%></td>
+                                    <td style="vertical-align: middle"><%=confer[i].important_dates.inform_end%></td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                管理
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="">更新信息</a>
+                                                <a class="dropdown-item" href="">投稿情况</a>
+                                                <a class="dropdown-item" href="">评审录入</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }%>
 
-                <div class="row bg-white" style="margin-bottom: 1rem; border: 2px solid #e9eef2">
-                    <div class="col">
-                        <ul class="list-group list-group-flush"> <!--会议列表-->
-                            <% for(let i = 0; i < confer.length; ++i){ %>
-                            <li class="list-group-item ">
-                                <h5><%= confer[i].title %></h5>
-                                <h6>日期: <%= confer[i].important_dates.conference_start %> 至 <%= confer[i].important_dates.conference_end %></h6>
-                                <h6>地点: <%= confer[i].location %></h6>
-                                <h6>主办机构: <%= confer[i].org %></h6>
-                                <select onchange="window.open(this.options[this.selectedIndex].value);this.selectedIndex=0" class="btn-dark btn btn-info btn-sm">
-                                    <option>选择操作</option>
-                                    <option value ="/updateinfo">修改会议信息</option>
-                                    <option value ="#" >查看投稿记录</option>
-                                    <option value="#">投稿评审</option>
-                                </select>
-                            </li>
-                            <% } %>
-                        </ul>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+        </div>
 
                 <%- include('page_index.ejs', {page: page})%>
 
@@ -92,11 +82,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->

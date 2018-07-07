@@ -141,18 +141,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
 <script src="/socket.io/socket.io.js"></script> <!-- this script is provided by socket.io at runtime -->
 <script>
-    var paperend = '<%=confer.important_dates.paper_end%>';
-    var informend = '<%=confer.important_dates.inform_end%>';
-    var registerend = '<%=confer.important_dates.register_end%>';
-    var paperendformat = paperend.substr(0,4)+'年'+paperend.substr(5,2)+'月'+paperend.substr(8,2)+'日'+' '+paperend.substr(11,5);
-    var informendformat = informend.substr(0,4)+'年'+ informend.substr(5,2)+'月'+ informend.substr(8,2)+'日'+' '+ informend.substr(11,5);
-    var registerendformat = registerend.substr(0,4)+'年'+ registerend.substr(5,2)+'月'+ registerend.substr(8,2)+'日'+' '+ registerend.substr(11,5);
     var pe = document.getElementById('staticpaperend');
     var ie = document.getElementById('staticinformend');
     var re = document.getElementById('staticregisterend');
-    pe.value = paperendformat;
-    ie.value = informendformat;
-    re.value = registerendformat;
+    pe.value = '<%=peformat%>';
+    ie.value = '<%=ieformat%>'
+    re.value = '<%=reformat%>'
 </script>
 
 
