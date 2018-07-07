@@ -1,4 +1,4 @@
-
+var meetingid
 $('#date_form').click((e) => {
   e.stopPropagation();
 });

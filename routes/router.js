@@ -127,5 +127,18 @@ router.get('/conference/:confer_id/review/:paper_id', function (req, res, next) 
 router.get('/signup', function (req, res, next) {
   res.render('signup');
 });
+router.get('/reviewresult',function(req,res,next){
+  mongodb.searchResult('test@test.com',5,(result) => {
 
+
+        result.forEach((item,index)=>
+       {
+          mongodb.getConference(item.cid,res=>{
+          item.cid=res.title;
+          })
+       })
+       res.render('reviewresult', {contribution: result})
+
+    });
+})
 module.exports = router;
