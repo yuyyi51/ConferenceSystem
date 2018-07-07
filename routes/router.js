@@ -123,8 +123,14 @@ router.get('/uploadcontribution/:confer_id', function (req, res, next) {
       res.render('uploadcontribution',{username: username, usertype: usertype,confer_id:req.params.confer_id});
 });
 router.get('/mymeetings', function (req, res, next) {
-  if (auth_person(req, res))
-    res.render('mymeetings')
+  if (auth_unit(req, res)){
+      var username;
+      var usertype;
+      username = req.session.user.username;
+      usertype = req.session.user.type;
+      res.render('mymeetings',{username:username,usertype:usertype});
+  }
+
 });
 
 router.get('/conference/:confer_id', function (req, res, next) {

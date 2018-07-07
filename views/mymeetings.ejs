@@ -10,10 +10,10 @@
     <title>会议管理</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
 
     <!--Font Awesonme图标库-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
@@ -23,188 +23,80 @@
 <div class="container-fluid" > <!--主体容器-->
     <div class="row flex-lg-nowrap"> <!--防溢出-->
         <div class="bg-primary sidebar-div sticky-top" style="width: 240px;" >  <!--侧边导航栏-->
-            <%- include("orgsidebar.ejs")%>
+            <% if (usertype === 'undefined'){ %>
+            <%- include("unlogsidebar.ejs")%>
+            <% }%>
+            <% if (usertype === 'unit'){ %>
+            <%- include("orgsidebar.ejs",{username: username, usertype:usertype})%>
+            <% }%>
+            <% if (usertype === 'person'){ %>
+            <%- include("personsidebar.ejs",{username: username, usertype:usertype})%>
+            <% }%>
         </div><!--侧边导航栏-->
 
         <div class="bg-light col">  <!--网页主体-->
-
             <!--头部导航栏-->
             <%- include("headnavbar.ejs", {page_title:"我的会议"})%>
             <!--头部导航栏-->
-
-            <div class="form-row">
-                <div class="col-lg-12">
-                    <div class="panel">
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover" data-url="">
-                                    <thead>
-                                    <tr>
-                                        <th style="text-align: center ;min-width: 60px">序号</th>
-                                        <th >会议主题</th>
-                                        <th style="max-width: 200px;min-width: 150px">投稿截止时间</th>
-                                        <th style="max-width: 100px;min-width: 100px">会议地点</th>
-                                        <th style="max-width: 100px;min-width: 100px">会议开始日期</th>
-                                        <th style="max-width: 200px;min-width: 130px">操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td style="text-align: center">1</td>
-                                        <td style="text-align: left">XXXXXXXXX</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-07-04</td>
-                                        <td style="color:inherit">北京市昌平区</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-07-14</td>
-                                        <td style="width: 130px">
-                                            <select onchange="window.open(this.options[this.selectedIndex].value);this.selectedIndex=0" class="btn-dark btn btn-info btn-sm">
-                                                <option>选择操作</option>
-                                                <option value ="updateinfo.html">修改会议信息</option>
-                                                <option value ="#" >查看投稿记录</option>
-                                                <option value="#">投稿评审</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center">2</td>
-                                        <td style="text-align: left">XXXXXXXXX</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-06-29</td>
-                                        <td style="color:inherit">北京市海淀区</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-07-11</td>
-                                        <td style="width: 130px">
-                                            <select onchange="window.open(this.options[this.selectedIndex].value);this.selectedIndex=0" class="btn-dark btn btn-info btn-sm">
-                                                <option>选择操作</option>
-                                                <option value ="updateinfo.html">修改会议信息</option>
-                                                <option value ="#" >查看投稿记录</option>
-                                                <option value="#">投稿评审</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center">3</td>
-                                        <td style="text-align: left">XXXXXXXXX</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-06-28</td>
-                                        <td style="color:inherit">上海市宝山区</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-07-08</td>
-                                        <td style="width: 130px">
-                                            <select onchange="window.open(this.options[this.selectedIndex].value);this.selectedIndex=0" class="btn-dark btn btn-info btn-sm">
-                                                <option>选择操作</option>
-                                                <option value ="updateinfo.html">修改会议信息</option>
-                                                <option value ="#" >查看投稿记录</option>
-                                                <option value="#">投稿评审</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center">4</td>
-                                        <td style="text-align: left">XXXXXXXXX</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-06-29</td>
-                                        <td style="color:inherit">新疆维吾尔自治区乌鲁木齐市天山区</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-07-07</td>
-                                        <td style="width: 130px">
-                                            <select onchange="window.open(this.options[this.selectedIndex].value);this.selectedIndex=0" class="btn-dark btn btn-info btn-sm">
-                                                <option>选择操作</option>
-                                                <option value ="updateinfo.html">修改会议信息</option>
-                                                <option value ="#" >查看投稿记录</option>
-                                                <option value="#">投稿评审</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center">5</td>
-                                        <td style="text-align: left">XXXXXXXXX</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-06-29</td>
-                                        <td style="color:inherit">山西省大同市南城区</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-07-11</td>
-                                        <td style="width: 130px">
-                                            <select onchange="window.open(this.options[this.selectedIndex].value);this.selectedIndex=0" class="btn-dark btn btn-info btn-sm">
-                                                <option>选择操作</option>
-                                                <option value ="updateinfo.html">修改会议信息</option>
-                                                <option value ="#" >查看投稿记录</option>
-                                                <option value="#">投稿评审</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center">6</td>
-                                        <td style="text-align: left">XXXXXXXXX</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-06-29</td>
-                                        <td style="color:inherit">北京市东城区</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-07-13</td>
-                                        <td style="width: 130px">
-                                            <select onchange="window.open(this.options[this.selectedIndex].value);this.selectedIndex=0" class="btn-dark btn btn-info btn-sm">
-                                                <option>选择操作</option>
-                                                <option value ="updateinfo.html">修改会议信息</option>
-                                                <option value ="#" >查看投稿记录</option>
-                                                <option value="#">投稿评审</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center">7</td>
-                                        <td style="text-align: left">XXXXXXXXX</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-07-01</td>
-                                        <td style="color:inherit">广东省广州市黄浦区</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-07-06</td>
-                                        <td style="width: 130px">
-                                            <select onchange="window.open(this.options[this.selectedIndex].value);this.selectedIndex=0" class="btn-dark btn btn-info btn-sm">
-                                                <option>选择操作</option>
-                                                <option value ="updateinfo.html">修改会议信息</option>
-                                                <option value ="#" >查看投稿记录</option>
-                                                <option value="#">投稿评审</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: center">8</td>
-                                        <td style="text-align: left">XXXXXXXXX</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-07-2</td>
-                                        <td style="color:inherit">江苏省苏州市高新区</td>
-                                        <td style="color:rgba(10, 10, 10, 0.45)">2018-07-11</td>
-                                        <td style="width: 130px" class="btn-group">
-                                            <!--button class="btn btn-info" href="#" style="padding: 3px 6px;margin-right: 10px"  >
-                                                <i class="fa btn-block" style="font-size: small">修改发布信息</i>
-                                            </button-->
-                                            <select onchange="window.open(this.options[this.selectedIndex].value);this.selectedIndex=0" class="btn-dark btn btn-info btn-sm">
-                                                <option>选择操作</option>
-                                                <option value ="updateinfo.html">修改会议信息</option>
-                                                <option value ="#" >查看投稿记录</option>
-                                                <option value="#">投稿评审</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-
-                                    </tbody>
-                                </table>
-                                <div class="row">
-                                    <div class="col">
-                                        <nav aria-label="...">
-                                            <ul class="pagination justify-content-center">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                                </li>
-                                                <li class="page-item active"><a class="page-link" href="#">1 <span class="sr-only">(current)</span></a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">2</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">Next</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
+            <div class="container-fluid">
+                <div class="form-row bg-white" style="margin-top:3rem;border: 2px solid #e9eef2">
+                    <div class="col">
+                        <table class="table table-borderless" style="margin-bottom: -0.1rem;">
+                            <thead>
+                            <tr class="">
+                                <th scope="col">#</th>
+                                <th scope="col">会议标题</th>
+                                <th scope="col">会议日期</th>
+                                <th scope="col">投稿截止时间</th>
+                                <th scope="col">录用通知时间</th>
+                                <th scope="col">管理</th>
+                            </tr>
+                            </thead>
+                            <tbody class="">
+                            <tr class="align-items-center" style="border-top: 1px solid #e9eef2;">
+                                <th scope="row" style="vertical-align: middle">1</th>
+                                <td style="vertical-align: middle">会议标题1</td>
+                                <td style="vertical-align: middle">会议日期1</td>
+                                <td style="vertical-align: middle">投稿截止时间1</td>
+                                <td style="vertical-align: middle">录用通知时间1</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-info dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            管理
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="">更新信息</a>
+                                            <a class="dropdown-item" href="">投稿情况</a>
+                                            <a class="dropdown-item" href="">评审录入</a>
+                                        </div>
                                     </div>
-                                </div>
+                                </td>
+                            </tr>
+                            <tr style="border-top: 1px solid #e9eef2">
+                                <th scope="row" style="vertical-align: middle">2</th>
+                                <td style="vertical-align: middle">会议标题2</td>
+                                <td style="vertical-align: middle">会议日期2</td>
+                                <td style="vertical-align: middle">投稿截止时间2</td>
+                                <td style="vertical-align: middle">录取通知时间2</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-info dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            管理
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="">更新信息</a>
+                                            <a class="dropdown-item" href="">投稿情况</a>
+                                            <a class="dropdown-item" href="">评审录入</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
 
-
-                            </div>
-
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-
+        </div>
 
         </div>
     </div>
@@ -214,7 +106,9 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-<script src="../../assets/js/vendor/popper.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
+<script src="https://cdn.staticfile.org/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.dev.js"></script>
+<script src="/socket.io/socket.io.js"></script> <!-- this script is provided by socket.io at runtime -->
 </body>
 </html>
