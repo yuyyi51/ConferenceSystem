@@ -230,7 +230,7 @@ io.on('connection', (socket) => {
                secondau: data.secondau,
                thirdau: data.thirdau,
                filename:data.filename,
-               cid:"5b3f091cc735dc13bc61c484",
+               cid:data.conferenceid,
                pid:null,
                uploader:socket.handshake.session.user.username
        };

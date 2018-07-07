@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongodb = require('../lib/mongo');
 var moment = require('moment');
+var config = require('../lib/config');
 
 function auth_person(req, res) {
   if (!req.session.user) {
@@ -26,7 +27,7 @@ function auth_unit(req, res) {
 }
 
 router.get('/', function (req, res, next) {
-  res.redirect('/signin');
+  res.redirect('/meetinfo');
   /*
   let title = 'hello';
   //console.log("index");
@@ -187,8 +188,18 @@ router.get('/conference/:confer_id/review', function (req, res, next) {
     if (page !== undefined) {
       skip = (page - 1) * 5;
     }
+    var username;
+    var usertype;
+    if (req.session.user){
+      username = req.session.user.username;
+      usertype = req.session.user.type;
+    }
+    else{
+      username = 'defaultname';
+      usertype = 'undefined';
+    }
     mongodb.selectPapers(cid, skip, 5, (result) => {
-      res.render('review', {page: parseInt(page), papers: result, cid: cid});
+      res.render('review', {page: parseInt(page), papers: result, cid: cid, username:username, usertype:usertype});
     });
   }
 });
@@ -221,7 +232,11 @@ router.get('/conference/:confer_id/review/:paper_id', function (req, res, next) 
 
 router.get('/conference/:confer_id/review/:paper_id/download', function (req, res, next){
   if (auth_unit(req, res)){
-    res.send('download');
+    let pid = req.params.paper_id;
+    mongodb.selectPaper(pid, (result) => {
+      let path = config.file_path + pid;
+      res.download(path, result.filename);
+    });
   }
 });
 
