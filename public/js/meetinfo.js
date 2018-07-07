@@ -1,4 +1,5 @@
-var meetingid
+function $$(id) { return document.getElementById(id); }
+
 $('#date_form').click((e) => {
   e.stopPropagation();
 });
@@ -24,3 +25,8 @@ $('#asc').click(() => {
   parmString.set('order', '1');
   window.location.href = "/meetinfo?" + parmString.toString();
 });
+
+$$('start_date').oninput= ()=>{
+  if ($$('start_date').value > $$('end_date').value) $$('end_date').value='';
+  $$('end_date').min=$$('start_date').value;
+}

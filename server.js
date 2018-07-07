@@ -230,7 +230,7 @@ io.on('connection', (socket) => {
                secondau: data.secondau,
                thirdau: data.thirdau,
                filename:data.filename,
-               cid:"5b3f091cc735dc13bc61c484",
+               cid:data.conferenceid,
                pid:null,
                uploader:socket.handshake.session.user.username
        };
@@ -261,8 +261,26 @@ io.on('connection', (socket) => {
       });
 
   socket.on('org:review', (data) => {
-    mongodb.reviewPaper(data.pid, data.update, (res) => {
-      socket.emit('org:review', res !== null);
+    mongodb.reviewPaper(data.pid, data.update, (resr) => {
+      let cid = data.cid;
+      mongodb.selectConference(cid, (res) => {
+        let c_title = res.title;
+        mongodb.selectPaper(data.pid,(res) => {
+          let email = res.uploader;
+          let result = "未知";
+          if (data.update.result === 1) result = "通过";
+          if (data.update.result === 2) result = "需要修改";
+          if (data.update.result === 3) result = "拒绝";
+          let mailmessage = {
+            from: "yuyyi51@163.com",
+            to: email,
+            subject: "学术会议管理系统",
+            text: '用户' + email + '，您向会议"'+ c_title +'"投稿的论文已被回忆负责人审阅。\n评审结果为：'+ result +'\n审阅意见为：\n' + data.update.opinion
+          };
+          sendmail(mailmessage);
+          socket.emit('org:review', resr !== null);
+        });
+      });
     });
   });
 
