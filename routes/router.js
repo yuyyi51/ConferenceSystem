@@ -115,7 +115,7 @@ router.get('/mymeetings', function (req, res, next) {
                 item.important_dates.paper_end = moment(item.important_dates.paper_end).format('YYYY年MM月DD日 HH:mm');
                 item.important_dates.inform_end = moment(item.important_dates.inform_end).format('YYYY年MM月DD日 HH:mm');
             });
-            res.render('mymeetings',{confer: result, username:username,usertype:usertype});
+            res.render('mymeetings',{confer: result, username:username,usertype:usertype, page:page});
         });
 
     }
