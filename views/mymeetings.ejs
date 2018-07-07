@@ -38,7 +38,7 @@
             <!--头部导航栏-->
             <%- include("headnavbar.ejs", {page_title:"我的会议"})%>
             <!--头部导航栏-->
-            <div class="container-fluid">
+            <div class="container">
                 <div class="form-row bg-white" style="margin-top:3rem;border: 2px solid #e9eef2">
                     <div class="col">
                         <table class="table table-borderless" style="margin-bottom: -0.1rem;">
@@ -53,44 +53,27 @@
                             </tr>
                             </thead>
                             <tbody class="">
-                            <tr class="align-items-center" style="border-top: 1px solid #e9eef2;">
-                                <th scope="row" style="vertical-align: middle">1</th>
-                                <td style="vertical-align: middle">会议标题1</td>
-                                <td style="vertical-align: middle">会议日期1</td>
-                                <td style="vertical-align: middle">投稿截止时间1</td>
-                                <td style="vertical-align: middle">录用通知时间1</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-outline-info dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            管理
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="">更新信息</a>
-                                            <a class="dropdown-item" href="">投稿情况</a>
-                                            <a class="dropdown-item" href="">评审录入</a>
+                            <% for (let i=0; i<confer.length;++i) { %>
+                                <tr class="align-items-center" style="border-top: 1px solid #e9eef2;">
+                                    <th scope="row" style="vertical-align: middle"><%=i+1%></th>
+                                    <td style="vertical-align: middle"><%=confer[i].title%></td>
+                                    <td style="vertical-align: middle"><%=confer[i].important_dates.conference_start%> 至 <%=confer[i].important_dates.conference_end%></td>
+                                    <td style="vertical-align: middle"><%=confer[i].important_dates.paper_end%></td>
+                                    <td style="vertical-align: middle"><%=confer[i].important_dates.inform_end%></td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn btn-outline-info dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                管理
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="">更新信息</a>
+                                                <a class="dropdown-item" href="">投稿情况</a>
+                                                <a class="dropdown-item" href="">评审录入</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr style="border-top: 1px solid #e9eef2">
-                                <th scope="row" style="vertical-align: middle">2</th>
-                                <td style="vertical-align: middle">会议标题2</td>
-                                <td style="vertical-align: middle">会议日期2</td>
-                                <td style="vertical-align: middle">投稿截止时间2</td>
-                                <td style="vertical-align: middle">录取通知时间2</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-outline-info dropdown-toggle" type="button" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            管理
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="">更新信息</a>
-                                            <a class="dropdown-item" href="">投稿情况</a>
-                                            <a class="dropdown-item" href="">评审录入</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            <% }%>
 
                             </tbody>
                         </table>

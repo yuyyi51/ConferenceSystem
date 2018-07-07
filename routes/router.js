@@ -96,6 +96,30 @@ router.get('/meetinfo', (req, res, next) => {
   */
 });
 
+router.get('/mymeetings', function (req, res, next) {
+    if (auth_unit(req, res)){
+        let page = req.query.page || 1;
+        var username;
+        var usertype;
+        username = req.session.user.username;
+        usertype = req.session.user.type;
+        let skip = 0;
+        if (page !== undefined){
+          skip = (page-1)*5;
+        }
+        mongodb.getmyConference(username,skip,10,(result)=>{
+            result.forEach((item, index) => {
+                item.important_dates.conference_start = moment(item.important_dates.conference_start).format('YYYY年MM月DD日');
+                item.important_dates.conference_end = moment(item.important_dates.conference_end).format('YYYY年MM月DD日');
+                item.important_dates.paper_end = moment(item.important_dates.paper_end).format('YYYY年MM月DD日 HH:mm');
+                item.important_dates.inform_end = moment(item.important_dates.inform_end).format('YYYY年MM月DD日 HH:mm');
+            });
+            res.render('mymeetings',{confer: result, username:username,usertype:usertype});
+        });
+
+    }
+});
+
 router.get('/logout', function (req, res, next) {
   //req.session.user = null;
   req.session.destroy((err) => {
@@ -124,22 +148,7 @@ router.get('/updateinfo', function (req, res, next) {
   }
 
 });
-router.get('/mymeetings', function (req, res, next) {
-  if (auth_person(req, res)){
-    var username;
-    var usertype;
-    if (req.session.user){
-      username = req.session.user.username;
-      usertype = req.session.user.type;
-    }
-    else{
-      username = 'defaultname';
-      usertype = 'undefined';
-    }
-    res.render('mymeetings',{username:username,usertype:usertype});
-  }
 
-});
 
 router.get('/conference/:confer_id', function (req, res, next) {
   //res.send(req.param('confer_id'));
