@@ -39,12 +39,20 @@ router.get('/', function (req, res, next) {
 
 router.get('/post', (req, res, next) => {
   if (auth_unit(req, res))
+  {
     var username;
     var usertype;
-    var userid;
-    username = req.session.user.username;
-    usertype = req.session.user.type;
+    if (req.session.user){
+      username = req.session.user.username;
+      usertype = req.session.user.type;
+    }
+    else{
+      username = 'defaultname';
+      usertype = 'undefined';
+    }
     res.render('post',{username: username, usertype: usertype});
+  }
+
 });
 
 router.get('/meetinfo', (req, res, next) => {
@@ -88,10 +96,6 @@ router.get('/meetinfo', (req, res, next) => {
   */
 });
 
-router.get('/meetdetail', (req, res, next) => {
-    res.render('meetdetail');
-});
-
 router.get('/logout', function (req, res, next) {
   //req.session.user = null;
   req.session.destroy((err) => {
@@ -105,52 +109,74 @@ router.get('/signin', function (req, res, next) {
   res.render('signin');
 });
 router.get('/updateinfo', function (req, res, next) {
-  if (auth_unit(req, res))
-    res.render('updateinfo');
-});
-router.get('/uploadcontribution/:confer_id', function (req, res, next) {
-  if (auth_person(req, res))
-      var username;
-      var usertype;
-      if (req.session.user){
-          username = req.session.user.username;
-          usertype = req.session.user.type;
-      }
-      else{
-          username = 'defaultname';
-          usertype = 'undefined';
-      }
-      res.render('uploadcontribution',{username: username, usertype: usertype,confer_id:req.params.confer_id});
-});
-router.get('/mymeetings', function (req, res, next) {
   if (auth_unit(req, res)){
-      var username;
-      var usertype;
+    var username;
+    var usertype;
+    if (req.session.user){
       username = req.session.user.username;
       usertype = req.session.user.type;
-      res.render('mymeetings',{username:username,usertype:usertype});
+    }
+    else{
+      username = 'defaultname';
+      usertype = 'undefined';
+    }
+    res.render('updateinfo',{username:username,usertype:usertype});
+  }
+
+});
+router.get('/mymeetings', function (req, res, next) {
+  if (auth_person(req, res)){
+    var username;
+    var usertype;
+    if (req.session.user){
+      username = req.session.user.username;
+      usertype = req.session.user.type;
+    }
+    else{
+      username = 'defaultname';
+      usertype = 'undefined';
+    }
+    res.render('mymeetings',{username:username,usertype:usertype});
   }
 
 });
 
 router.get('/conference/:confer_id', function (req, res, next) {
   //res.send(req.param('confer_id'));
-  if (auth_person(req, res))
-      var username;
-      var usertype;
-      if (req.session.user){
-          username = req.session.user.username;
-          usertype = req.session.user.type;
-      }
-      else{
-          username = 'defaultname';
-          usertype = 'undefined';
-      }
-      mongodb.selectConference(req.params.confer_id,(result)=>{
-        result.important_dates.conference_start = moment(result.important_dates.conference_start).format('YYYY年MM月DD日');
-        result.important_dates.conference_end = moment(result.important_dates.conference_end).format('YYYY年MM月DD日');
-        res.render('conferencedetail',{username: username, usertype:usertype, confer: result});
-      })
+  if (auth_person(req, res)){
+    var username;
+    var usertype;
+    if (req.session.user){
+      username = req.session.user.username;
+      usertype = req.session.user.type;
+    }
+    else{
+      username = 'defaultname';
+      usertype = 'undefined';
+    }
+    mongodb.selectConference(req.params.confer_id,(result)=>{
+      result.important_dates.conference_start = moment(result.important_dates.conference_start).format('YYYY年MM月DD日');
+      result.important_dates.conference_end = moment(result.important_dates.conference_end).format('YYYY年MM月DD日');
+      res.render('conferencedetail',{username: username, usertype:usertype, confer: result, cid: req.params.confer_id});
+    })
+  }
+
+});
+
+router.get('/conference/:confer_id/uploadcontribution', function (req, res, next) {
+  if (auth_person(req, res)){
+    var username;
+    var usertype;
+    if (req.session.user){
+      username = req.session.user.username;
+      usertype = req.session.user.type;
+    }
+    else{
+      username = 'defaultname';
+      usertype = 'undefined';
+    }
+    res.render('uploadcontribution',{username: username, usertype: usertype,confer_id:req.params.confer_id});
+  }
 });
 
 router.get('/conference/:confer_id/review', function (req, res, next) {
@@ -168,27 +194,55 @@ router.get('/conference/:confer_id/review', function (req, res, next) {
 });
 
 router.get('/conference/:confer_id/review/:paper_id', function (req, res, next) {
-  if (auth_unit(req, res))
-    res.send(req.params.confer_id + ' ' + req.params.paper_id);
+  if (auth_unit(req, res)) {
+    if (req.params.paper_id.length !== 24) {
+      res.send('参数错误');
+      return;
+    }
+    var username;
+    var usertype;
+    if (req.session.user){
+      username = req.session.user.username;
+      usertype = req.session.user.type;
+    }
+    else{
+      username = 'defaultname';
+      usertype = 'undefined';
+    }
+    mongodb.selectPaper(req.params.paper_id, (result) => {
+      if (result === null) {
+        res.send('论文不存在');
+        return;
+      }
+      res.render('review_detail', {paper: result, cid: req.params.confer_id,username:username,usertype:usertype});
+    });
+  }
 });
 
+router.get('/conference/:confer_id/review/:paper_id/download', function (req, res, next){
+  if (auth_unit(req, res)){
+    res.send('download');
+  }
+});
 
 router.get('/signup', function (req, res, next) {
   res.render('signup');
 });
 
 router.get('/unituserRegister',function (req, res, next){
+  if (auth_person(req, res)){
     var username;
     var usertype;
     if (req.session.user){
-        username = req.session.user.username;
-        usertype = req.session.user.type;
+      username = req.session.user.username;
+      usertype = req.session.user.type;
     }
     else{
-        username = 'defaultname';
-        usertype = 'undefined';
+      username = 'defaultname';
+      usertype = 'undefined';
     }
     res.render('unituserRegister',{username:username,usertype:usertype});
-})
+  }
+});
 
 module.exports = router;

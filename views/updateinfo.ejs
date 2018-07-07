@@ -40,25 +40,17 @@
 
                 </div> <!--头部商标end-->
 
-                <div class="row navbar-dark bg-dark"> <!--侧面导航栏主体-->
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link side-nav-link active" href="#"><i class="fas fa-address-card"></i> 法人信息</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link side-nav-link active" href="mymeetings.html"><i class="far fa-edit"></i> 会议管理</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link side-nav-link active" href="post.html"><i class="fas fa-external-link-alt"></i> 发布会议</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link side-nav-link active" href="meetinfo.html"><i class="fas fa-list-ul"></i> 会议概览</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link side-nav-link active" href="#"><i class="fas fa-sign-out-alt"></i> 退出登录</a>
-                        </li>
-                    </ul>
-                </div><!--侧面导航栏主体-->
+                <div class="bg-primary sidebar-div sticky-top" style="width: 240px;" >  <!--侧边导航栏-->
+                    <% if (usertype === 'undefined'){ %>
+                    <%- include("unlogsidebar.ejs")%>
+                    <% }%>
+                    <% if (usertype === 'unit'){ %>
+                    <%- include("orgsidebar.ejs",{username: username, usertype:usertype})%>
+                    <% }%>
+                    <% if (usertype === 'person'){ %>
+                    <%- include("personsidebar.ejs",{username: username, usertype:usertype})%>
+                    <% }%>
+                </div><!--侧边导航栏-->
             </div>
         </div><!--侧边导航栏-->
 
