@@ -114,6 +114,10 @@
                                 <textarea class="form-control" id="staticinfo" rows="7" placeholder="<%=confer.paper_info%>" style="background: #ffffff" readonly></textarea>
                             </div>
 
+                            <% if (usertype === 'person'){ %>
+                            <%- include("condetailbtn.ejs",{confer_id: confer._id})%>
+                            <% }%>
+
                         </form>
 
                     </div>
