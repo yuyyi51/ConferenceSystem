@@ -157,7 +157,10 @@ router.get('/conference/:confer_id', function (req, res, next) {
     mongodb.selectConference(req.params.confer_id,(result)=>{
       result.important_dates.conference_start = moment(result.important_dates.conference_start).format('YYYY年MM月DD日');
       result.important_dates.conference_end = moment(result.important_dates.conference_end).format('YYYY年MM月DD日');
-      res.render('conferencedetail',{username: username, usertype:usertype, confer: result, cid: req.params.confer_id});
+      var peformat = moment(result.important_dates.paper_end).format('YYYY年MM月DD日 HH:mm');
+      var ieformat = moment(result.important_dates.inform_end).format('YYYY年MM月DD日 HH:mm');
+      var reformat = moment(result.important_dates.register_end).format('YYYY年MM月DD日 HH:mm');
+      res.render('conferencedetail',{username: username, usertype:usertype, confer: result, peformat:peformat, ieformat:ieformat, reformat: reformat, cid: req.params.confer_id});
     })
   }
 
