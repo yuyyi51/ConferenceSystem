@@ -243,20 +243,35 @@ router.get('/conference/:confer_id/review/:paper_id/download', function (req, re
 router.get('/signup', function (req, res, next) {
   res.render('signup');
 });
-router.get('/reviewresult',function(req,res,next){
-  mongodb.searchResult('test@test.com',5,(result) => {
+router.get('/reviewresult', function (req, res, next) {
+  mongodb.searchResult('test@test.com', 5, (result) => {
+    let length = result.length;
 
-
-        result.forEach((item,index)=>
-       {
-          mongodb.getConference(item.cid,res=>{
-          item.cid=res.title;
-          })
-       })
-       res.render('reviewresult', {contribution: result})
-
+    let f = (index, fn) => {
+      if (index >= length) {
+        fn(result);
+        return;
+      }
+      mongodb.getConference(result[index].cid, (res) => {
+        result[index].title = res.title;
+        f(index + 1, fn);
+      });
+    };
+    f(0,(result) => {
+      var username;
+      var usertype;
+      if (req.session.user){
+        username = req.session.user.username;
+        usertype = req.session.user.type;
+      }
+      else{
+        username = 'defaultname';
+        usertype = 'undefined';
+      }
+      res.render('reviewresult', {contribution: result,username:username,usertype:usertype})
     });
-})
+  });
+});
 router.get('/unituserRegister',function (req, res, next){
   if (auth_person(req, res)){
     var username;
