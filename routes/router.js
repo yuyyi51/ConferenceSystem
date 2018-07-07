@@ -39,12 +39,15 @@ router.get('/', function (req, res, next) {
 
 router.get('/post', (req, res, next) => {
   if (auth_unit(req, res))
+  {
     var username;
     var usertype;
     var userid;
     username = req.session.user.username;
     usertype = req.session.user.type;
     res.render('post',{username: username, usertype: usertype});
+  }
+
 });
 
 router.get('/meetinfo', (req, res, next) => {
@@ -88,10 +91,6 @@ router.get('/meetinfo', (req, res, next) => {
   */
 });
 
-router.get('/meetdetail', (req, res, next) => {
-    res.render('meetdetail');
-});
-
 router.get('/logout', function (req, res, next) {
   //req.session.user = null;
   req.session.destroy((err) => {
@@ -127,7 +126,7 @@ router.get('/conference/:confer_id', function (req, res, next) {
     mongodb.selectConference(req.params.confer_id,(result)=>{
       result.important_dates.conference_start = moment(result.important_dates.conference_start).format('YYYY年MM月DD日');
       result.important_dates.conference_end = moment(result.important_dates.conference_end).format('YYYY年MM月DD日');
-      res.render('conferencedetail',{username: username, usertype:usertype, confer: result});
+      res.render('conferencedetail',{username: username, usertype:usertype, confer: result, cid: req.params.confer_id});
     })
 });
 
