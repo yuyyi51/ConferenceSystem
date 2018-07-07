@@ -67,7 +67,29 @@ router.get('/uploadcontribution', function (req, res, next) {
     res.render('UploadContribution');
 });
 router.get('/mymeetings',function (req, res, next) {
-   res.render('mymeetings');
+    let page = req.query.page || 1;
+    let order = req.query.order || -1;
+    order = parseInt(order);
+    console.log(order);
+    let keywords = req.query.keywords || '.';
+    keywords = keywords.split('+');
+    let startdate = req.query.start || '1970-1-1';
+    startdate = new Date(startdate);
+    let enddate = req.query.end || '3000-1-1';
+    enddate = new Date(enddate);
+
+    let skip = 0 ;
+    if (page !== undefined){
+        skip = (page-1)*5;
+    }
+    mongodb.searchConference(keywords, startdate, enddate, skip, 5, order, (result) => {
+        //console.log(result);
+        result.forEach((item, index)=>{
+            item.important_dates.conference_start = moment(item.important_dates.conference_start).format('YYYY年MM月DD日');
+            item.important_dates.conference_end = moment(item.important_dates.conference_end).format('YYYY年MM月DD日');
+        });
+        res.render('mymeetings', {confer: result, page: (parseInt(page) || 1)});
+    });
 });
 
 router.get('/conference/:confer_id' , function(req, res, next){
