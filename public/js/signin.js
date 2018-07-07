@@ -11,10 +11,10 @@ $$("form").onsubmit = (e) => {
 socket.on('user:login', (res) => {
   console.log(res);
   if (res){
-    alert("登录成功");
-    window.location.href = "/meetinfo";
+    alert('登录成功');
+    window.location.href = '/meetinfo';
   }
   else {
-    alert("登陆失败");
+    alert('登录失败');
   }
 });

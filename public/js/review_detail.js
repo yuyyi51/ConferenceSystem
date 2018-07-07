@@ -1,5 +1,6 @@
 function pass() {
   let data = {
+    cid: $('#cid')[0].innerHTML,
     pid: $('#_id')[0].innerHTML,
     update:{
       opinion: $('#review_opinion')[0].value,
@@ -11,6 +12,7 @@ function pass() {
 
 function modify() {
   let data = {
+    cid: $('#cid')[0].innerHTML,
     pid: $('#_id')[0].innerHTML,
     update:{
       opinion: $('#review_opinion')[0].value,
@@ -22,6 +24,7 @@ function modify() {
 
 function reject() {
   let data = {
+    cid: $('#cid')[0].innerHTML,
     pid: $('#_id')[0].innerHTML,
     update:{
       opinion: $('#review_opinion')[0].value,

@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../../../favicon.ico">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+
     <title>修改会议信息</title>
 
     <!-- Bootstrap core CSS -->
@@ -72,7 +72,6 @@
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>
-            <!--头部导航栏-->
 
             <div class="container">
                 <div class="row bg-white" style="margin-top: 2rem;margin-bottom: 1rem; border: 2px solid #e9eef2">
@@ -94,7 +93,7 @@
                                 </div>
                             </div>
 
-                            <label for="province" style="font-size: 1.2rem; margin-top: 1rem">主办地点</label>
+                            <label for="Place" style="font-size: 1.2rem; margin-top: 1rem">主办地点</label>
                             <div class="form-row">
                                 <div class="form-group col-md-2">
                                     <input type="text" class="form-control" id="province" placeholder="北京市" readonly="readonly">
@@ -109,41 +108,22 @@
 
                             <label for="Date Range" style="font-size: 1.2rem;">起止日期</label>
                             <div class="form-row">
-
-                                <div class="col">
-                                    <input type="text" class="form-control" placeholder="2018年" id="startyear" readonly="readonly">
-                                </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" placeholder="8月" id="starmonth" readonly="readonly">
-                                </div>
-                                <div class="col">
-                                    <input type="text"  class="form-control" placeholder="12日" id="startday" readonly="readonly">
+                                <div class="col-auto">
+                                    <input type="date" class="form-control" id="startDate" readonly="readonly">
+                                    <div class="invalid-feedback">请选择会议开始日期</div>
                                 </div>
                                 <label style="font-size: 1rem; margin-left: 1rem; margin-right: 1rem;">至</label>
-                                <div class="col">
-                                    <input type="text" class="form-control" placeholder="2018年" id="endyear" readonly="readonly">
+                                <div class="col-auto">
+                                    <input type="date" class="form-control" id="endDate" readonly="readonly">
+                                    <div class="invalid-feedback">请选择会议结束日期</div>
                                 </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" placeholder="8月" id="endmonth" readonly="readonly">
-                                </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" placeholder="20日" id="endday" readonly="readonly">
-                                </div>
-
-
                             </div>
 
-                            <label for="ddl" style="font-size: 1.2rem;">投稿截止日期</label>
+                            <label for="paperdate" style="font-size: 1.2rem;">截稿时间</label>
                             <div class="form-row">
-
-                                <div class="col">
-                                    <input type="text" class="form-control" required placeholder="2018年" id="ddlyear">
-                                </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" required placeholder="8月" id="ddlmonth">
-                                </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" required placeholder="3日" id="ddlday">
+                                <div class="col-auto">
+                                    <input type="datetime-local" class="form-control" id="paperDate" required>
+                                    <div class="invalid-feedback">请于会议开始日期前选择截稿时间</div>
                                 </div>
                             </div>
 

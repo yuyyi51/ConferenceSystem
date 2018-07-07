@@ -38,13 +38,13 @@ $$('button').onclick = () =>   {
 
     file.size = files[0].size;
 
-    file.title= $$('Contitle').value,
-        file.org=$$('org').value,
-        file.firstau=$$('FirstAu').value,
-        file.secondau=$$('SecondAu').value,
-        file.thirdau=$$('ThirdAu').value,
-        file.abstract=$$('Abstract').value
-
+    file.title= $$('Contitle').value;
+    file.org=$$('org').value;
+    file.firstau=$$('FirstAu').value;
+    file.secondau=$$('SecondAu').value;
+    file.thirdau=$$('ThirdAu').value;
+    file.abstract=$$('Abstract').value;
+    file.conferenceid=$$('cid').innerHTML;
     load(files[0], (res) => {
 
         file.base64 = res.replace(/^data:.*?;base64,/, "");

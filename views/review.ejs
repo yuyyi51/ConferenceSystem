@@ -25,7 +25,15 @@
 <div class="container-fluid" > <!--主体容器-->
     <div class="row flex-lg-nowrap"> <!--防溢出-->
         <div class="bg-primary sidebar-div sticky-top" style="width: 240px;" >  <!--侧边导航栏-->
-            <%- include("orgsidebar.ejs")%>
+            <% if (usertype === 'undefined'){ %>
+            <%- include("unlogsidebar.ejs")%>
+            <% }%>
+            <% if (usertype === 'unit'){ %>
+            <%- include("orgsidebar.ejs",{username: username, usertype:usertype})%>
+            <% }%>
+            <% if (usertype === 'person'){ %>
+            <%- include("personsidebar.ejs",{username: username, usertype:usertype})%>
+            <% }%>
         </div><!--侧边导航栏-->
 
         <div class="bg-light col">  <!--网页主体-->
@@ -41,36 +49,16 @@
                 <div class="row bg-white" style="margin-bottom: 1rem; border: 2px solid #e9eef2;">
                     <div class="col">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item ">
-                                <h5><a href="#" style="text-decoration:none; color: black">论文标题</a></h5>
-                                <h6>作者：作者1-作者2-作者3</h6>
-                                <h6>投稿时间：<%= new Date().toString()%></h6>
-                                <h6>摘要：</h6>
-                            </li>
-                            <li class="list-group-item ">
-                                <h5><a href="#" style="text-decoration:none; color: black">论文标题</a></h5>
-                                <h6>作者：作者1-作者2-作者3</h6>
-                                <h6>投稿时间：<%= new Date().toString()%></h6>
-                                <h6>摘要：</h6>
-                            </li>
-                            <li class="list-group-item ">
-                                <h5><a href="#" style="text-decoration:none; color: black">论文标题</a></h5>
-                                <h6>作者：作者1-作者2-作者3</h6>
-                                <h6>投稿时间：<%= new Date().toString()%></h6>
-                                <h6>摘要：</h6>
-                            </li>
-                            <li class="list-group-item ">
-                                <h5><a href="#" style="text-decoration:none; color: black">论文标题</a></h5>
-                                <h6>作者：作者1-作者2-作者3</h6>
-                                <h6>投稿时间：<%= new Date().toString()%></h6>
-                                <h6>摘要：</h6>
-                            </li>
-                            <li class="list-group-item ">
-                                <h5><a href="#" style="text-decoration:none; color: black">论文标题</a></h5>
-                                <h6>作者：作者1-作者2-作者3</h6>
-                                <h6>投稿时间：<%= new Date().toString()%></h6>
-                                <h6>摘要：</h6>
-                            </li>
+                            <%for(let i = 0; i < papers.length; ++i){%>
+                                <li class="list-group-item ">
+                                    <h5>标题：<a href="/conference/<%=cid%>/review/<%=papers[i]._id%>" style="text-decoration:none; color: black"><%=papers[i].title%></a></h5>
+                                    <h6>作者：<%=papers[i].firstau%>
+                                        <%if (papers[i].secondau){%>-<%=papers[i].secondau%><%}%>
+                                        <%if (papers[i].thirdau){%>-<%=papers[i].thirdau%><%}%></h6>
+                                    <h6>投稿时间：<%= new Date().toString()%></h6>
+                                    <h6>摘要：<%papers[i].abstract.substring(0,100)%></h6>
+                                </li>
+                            <%}%>
                         </ul>
                     </div>
                 </div>
